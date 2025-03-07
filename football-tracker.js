@@ -520,18 +520,32 @@ function createSecondHalfConfirmModal() {
         localStorage.removeItem('matchData');
     }
 
-   function updateUI() {
+  function updateUI() {
+    // อัพเดทหัวข้อทีม (ส่วนด้านบนของแต่ละฝั่ง)
     teamAHeader.textContent = matchState.teamA.name;
     teamAHeader.style.backgroundColor = matchState.teamA.color;
     teamBHeader.textContent = matchState.teamB.name;
     teamBHeader.style.backgroundColor = matchState.teamB.color;
     
-    // อัปเดตคะแนนในส่วนหัว
+    // อัพเดทชื่อทีมข้างสกอร์
+    const teamANameEl = document.getElementById('teamAName');
+    const teamBNameEl = document.getElementById('teamBName');
+    
+    if (teamANameEl) {
+        teamANameEl.textContent = matchState.teamA.name;
+    }
+    
+    if (teamBNameEl) {
+        teamBNameEl.textContent = matchState.teamB.name;
+    }
+    
+    // อัพเดทคะแนนในส่วนหัว
     const teamAScoreEl = document.getElementById('teamAScore');
     const teamBScoreEl = document.getElementById('teamBScore');
     teamAScoreEl.textContent = matchState.teamA.goals;
     teamBScoreEl.textContent = matchState.teamB.goals;
     
+    // อัพเดทสีปุ่ม
     teamASubBtn.style.backgroundColor = matchState.teamA.color;
     teamBSubBtn.style.backgroundColor = matchState.teamB.color;
     teamAHalfSubBtn.style.backgroundColor = matchState.teamA.color;
@@ -598,7 +612,7 @@ function createSecondHalfConfirmModal() {
             injuryBtn.style.display = 'block'; // แสดงปุ่ม Injury Time
         }
         
-        // อัปเดตข้อความปุ่มสำหรับครึ่งหลัง
+        // อัพเดทข้อความปุ่มสำหรับครึ่งหลัง
         if (!matchState.isFirstHalf) {
             startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Second Half';
         }
