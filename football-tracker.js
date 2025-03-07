@@ -247,84 +247,112 @@ function init() {
     }
 
     // Set up all event listeners
-    function setupEventListeners() {
-        startMatchBtn.addEventListener('click', startMatch);
-        injuryBtn.addEventListener('click', toggleInjuryTime);
-        injuryFab.addEventListener('click', toggleInjuryTime);
-        endMatchBtn.addEventListener('click', endMatch);
-        resetDataBtn.addEventListener('click', resetAllData);
-       
-        teamAYellowBtn.addEventListener('click', () => showCardDialog(true, true, false));
-        teamARedBtn.addEventListener('click', () => showCardDialog(true, false, false));
-        teamASubBtn.addEventListener('click', () => showSubstitutionDialog(true, false));
-        teamAHalfSubBtn.addEventListener('click', () => showSubstitutionDialog(true, true));
-        teamAGoalBtn.addEventListener('click', () => showCardDialog(true, false, true));
-        
-        teamBYellowBtn.addEventListener('click', () => showCardDialog(false, true, false));
-        teamBRedBtn.addEventListener('click', () => showCardDialog(false, false, false));
-        teamBSubBtn.addEventListener('click', () => showSubstitutionDialog(false, false));
-        teamBHalfSubBtn.addEventListener('click', () => showSubstitutionDialog(false, true));
-        teamBGoalBtn.addEventListener('click', () => showCardDialog(false, false, true));
-        
-        tabElements.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const team = tab.dataset.team;
-                const tabType = tab.dataset.tab;
-                document.querySelectorAll(`.tab[data-team="${team}"]`).forEach(t => {
-                    t.classList.remove('active');
-                });
-                tab.classList.add('active');
-                if (team === 'a') {
-                    teamACardsContent.classList.remove('active');
-                    teamASubsContent.classList.remove('active');
-                    if (tabType === 'cards') teamACardsContent.classList.add('active');
-                    else teamASubsContent.classList.add('active');
-                } else {
-                    teamBCardsContent.classList.remove('active');
-                    teamBSubsContent.classList.remove('active');
-                    if (tabType === 'cards') teamBCardsContent.classList.add('active');
-                    else teamBSubsContent.classList.add('active');
-                }
+   function setupEventListeners() {
+    startMatchBtn.addEventListener('click', startMatch);
+    injuryBtn.addEventListener('click', toggleInjuryTime);
+    injuryFab.addEventListener('click', toggleInjuryTime);
+    endMatchBtn.addEventListener('click', endMatch);
+    resetDataBtn.addEventListener('click', resetAllData);
+   
+    teamAYellowBtn.addEventListener('click', () => showCardDialog(true, true, false));
+    teamARedBtn.addEventListener('click', () => showCardDialog(true, false, false));
+    teamASubBtn.addEventListener('click', () => showSubstitutionDialog(true, false));
+    
+    // เพิ่มการตรวจสอบสำหรับปุ่ม Half-time Sub
+    teamAHalfSubBtn.addEventListener('click', () => {
+        if (matchState.isHalfTime) {
+            showSubstitutionDialog(true, true);
+        } else {
+            alert('Half-time substitutions can only be made during half-time');
+        }
+    });
+    
+    teamAGoalBtn.addEventListener('click', () => showCardDialog(true, false, true));
+    
+    teamBYellowBtn.addEventListener('click', () => showCardDialog(false, true, false));
+    teamBRedBtn.addEventListener('click', () => showCardDialog(false, false, false));
+    teamBSubBtn.addEventListener('click', () => showSubstitutionDialog(false, false));
+    
+    // เพิ่มการตรวจสอบสำหรับปุ่ม Half-time Sub
+    teamBHalfSubBtn.addEventListener('click', () => {
+        if (matchState.isHalfTime) {
+            showSubstitutionDialog(false, true);
+        } else {
+            alert('Half-time substitutions can only be made during half-time');
+        }
+    });
+    
+    teamBGoalBtn.addEventListener('click', () => showCardDialog(false, false, true));
+    
+    tabElements.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const team = tab.dataset.team;
+            const tabType = tab.dataset.tab;
+            document.querySelectorAll(`.tab[data-team="${team}"]`).forEach(t => {
+                t.classList.remove('active');
             });
-        });
-        
-        settingsBtn.addEventListener('click', () => {
-            if (!matchState.isMatchStarted) showTeamCustomizationDialog();
-            else showResetConfirmDialog();
-        });
-        
-        closeTeamSettingsBtn.addEventListener('click', () => teamSettingsModal.style.display = 'none');
-        saveTeamSettingsBtn.addEventListener('click', saveTeamSettings);
-        cancelTeamSettingsBtn.addEventListener('click', () => teamSettingsModal.style.display = 'none');
-        
-        closeCardModalBtn.addEventListener('click', () => cardModal.style.display = 'none');
-        saveCardBtn.addEventListener('click', saveCardEvent);
-        cancelCardBtn.addEventListener('click', () => cardModal.style.display = 'none');
-        
-        closeSubModalBtn.addEventListener('click', closeSubstitutionDialog);
-        saveSubBtn.addEventListener('click', saveSubstitutionEvent);
-        cancelSubBtn.addEventListener('click', closeSubstitutionDialog);
-        
-        closeInjurySummaryBtn.addEventListener('click', () => injurySummaryModal.style.display = 'none');
-        closeInjurySummaryConfirmBtn.addEventListener('click', () => {
-            injurySummaryModal.style.display = 'none';
-            if (matchState.isHalfTime) {
-                showHalfTimeDialog();
+            tab.classList.add('active');
+            if (team === 'a') {
+                teamACardsContent.classList.remove('active');
+                teamASubsContent.classList.remove('active');
+                if (tabType === 'cards') teamACardsContent.classList.add('active');
+                else teamASubsContent.classList.add('active');
+            } else {
+                teamBCardsContent.classList.remove('active');
+                teamBSubsContent.classList.remove('active');
+                if (tabType === 'cards') teamBCardsContent.classList.add('active');
+                else teamBSubsContent.classList.add('active');
             }
         });
-        
-        closeResetConfirmBtn.addEventListener('click', () => resetConfirmModal.style.display = 'none');
-        cancelResetBtn.addEventListener('click', () => resetConfirmModal.style.display = 'none');
-        confirmResetBtn.addEventListener('click', resetAllData);
+    });
+    
+    settingsBtn.addEventListener('click', () => {
+        if (!matchState.isMatchStarted) showTeamCustomizationDialog();
+        else showResetConfirmDialog();
+    });
+    
+    closeTeamSettingsBtn.addEventListener('click', () => teamSettingsModal.style.display = 'none');
+    saveTeamSettingsBtn.addEventListener('click', saveTeamSettings);
+    cancelTeamSettingsBtn.addEventListener('click', () => teamSettingsModal.style.display = 'none');
+    
+    closeCardModalBtn.addEventListener('click', () => cardModal.style.display = 'none');
+    saveCardBtn.addEventListener('click', saveCardEvent);
+    cancelCardBtn.addEventListener('click', () => cardModal.style.display = 'none');
+    
+    closeSubModalBtn.addEventListener('click', closeSubstitutionDialog);
+    saveSubBtn.addEventListener('click', saveSubstitutionEvent);
+    cancelSubBtn.addEventListener('click', closeSubstitutionDialog);
+    
+    closeInjurySummaryBtn.addEventListener('click', () => injurySummaryModal.style.display = 'none');
+    closeInjurySummaryConfirmBtn.addEventListener('click', () => {
+        injurySummaryModal.style.display = 'none';
+        if (matchState.isHalfTime) {
+            showHalfTimeDialog();
+        }
+    });
+    
+    closeResetConfirmBtn.addEventListener('click', () => resetConfirmModal.style.display = 'none');
+    cancelResetBtn.addEventListener('click', () => resetConfirmModal.style.display = 'none');
+    confirmResetBtn.addEventListener('click', resetAllData);
 
-        closeMatchSummaryBtn.addEventListener('click', () => matchSummaryModal.style.display = 'none');
-        closeMatchSummaryConfirmBtn.addEventListener('click', () => {
-            matchSummaryModal.style.display = 'none';
-            resetAllData();
+    closeMatchSummaryBtn.addEventListener('click', () => matchSummaryModal.style.display = 'none');
+    closeMatchSummaryConfirmBtn.addEventListener('click', () => {
+        matchSummaryModal.style.display = 'none';
+        resetAllData();
+    });
+    saveAsPdfBtn.addEventListener('click', saveSummaryAsPdf);
+    
+    // ถ้ามีการใช้ Half-time Modal
+    if (document.getElementById('closeHalfTimeBtn')) {
+        document.getElementById('closeHalfTimeBtn').addEventListener('click', () => {
+            halfTimeModal.style.display = 'none';
         });
-        saveAsPdfBtn.addEventListener('click', saveSummaryAsPdf);
     }
-
+    
+    if (document.getElementById('startSecondHalfBtn')) {
+        document.getElementById('startSecondHalfBtn').addEventListener('click', startSecondHalf);
+    }
+}
     // Initialize color pickers
     function initColorPickers() {
         teamAColorPicker.innerHTML = '';
@@ -415,34 +443,83 @@ function init() {
     }
 
     function updateUI() {
-        teamAHeader.textContent = matchState.teamA.name;
-        teamAHeader.style.backgroundColor = matchState.teamA.color;
-        teamBHeader.textContent = matchState.teamB.name;
-        teamBHeader.style.backgroundColor = matchState.teamB.color;
-        
-        // Update the scores in the header without team names
-        const teamAScoreEl = document.getElementById('teamAScore');
-        const teamBScoreEl = document.getElementById('teamBScore');
-        teamAScoreEl.textContent = matchState.teamA.goals;
-        teamBScoreEl.textContent = matchState.teamB.goals;
-        
-        teamASubBtn.style.backgroundColor = matchState.teamA.color;
-        teamBSubBtn.style.backgroundColor = matchState.teamB.color;
-        teamAHalfSubBtn.style.backgroundColor = matchState.teamA.color;
-        teamBHalfSubBtn.style.backgroundColor = matchState.teamB.color;
-        
-        // Update half-time substitution buttons visibility
-       if (matchState.isHalfTime) {
-        // ในช่วงพักครึ่ง ให้แสดงปุ่ม Start Second Half ในส่วนของ matchControls
-        matchControlsEl.style.display = 'flex';
-        injuryControlsEl.style.display = 'none';
-        injuryFab.style.display = 'none';
-        startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Second Half';
-    } else if (matchState.isMatchStarted) {
+    teamAHeader.textContent = matchState.teamA.name;
+    teamAHeader.style.backgroundColor = matchState.teamA.color;
+    teamBHeader.textContent = matchState.teamB.name;
+    teamBHeader.style.backgroundColor = matchState.teamB.color;
+    
+    // อัปเดตคะแนนในส่วนหัวโดยไม่ต้องใส่ชื่อทีม
+    const teamAScoreEl = document.getElementById('teamAScore');
+    const teamBScoreEl = document.getElementById('teamBScore');
+    teamAScoreEl.textContent = matchState.teamA.goals;
+    teamBScoreEl.textContent = matchState.teamB.goals;
+    
+    teamASubBtn.style.backgroundColor = matchState.teamA.color;
+    teamBSubBtn.style.backgroundColor = matchState.teamB.color;
+    teamAHalfSubBtn.style.backgroundColor = matchState.teamA.color;
+    teamBHalfSubBtn.style.backgroundColor = matchState.teamB.color;
+    
+    // ปรับการแสดงปุ่ม Half-time Sub ให้แสดงเฉพาะช่วงพักครึ่งเท่านั้น
+    if (matchState.isHalfTime) {
+        // ช่วงพักครึ่ง: แสดงปุ่ม Half-time Sub, ซ่อนปุ่ม Substitution
+        teamAHalfSubBtn.style.display = 'block';
+        teamBHalfSubBtn.style.display = 'block';
+        teamASubBtn.style.display = 'none';
+        teamBSubBtn.style.display = 'none';
+    } else {
+        // ระหว่างการแข่งขัน หรือก่อนเริ่มเกม: ซ่อนปุ่ม Half-time Sub, แสดงปุ่ม Substitution
+        teamAHalfSubBtn.style.display = 'none';
+        teamBHalfSubBtn.style.display = 'none';
+        teamASubBtn.style.display = 'block';
+        teamBSubBtn.style.display = 'block';
+    }
+    
+    updateSubstitutionButtonsState();
+    
+    // แสดงเวลาการแข่งขัน
+    matchTimeEl.textContent = matchState.elapsedTime;
+    
+    if (matchState.isInjuryTimeActive) {
+        injuryTimeEl.textContent = matchState.currentInjuryTimeDisplay;
+        injuryTimeEl.style.display = 'block';
+        totalInjuryEl.style.display = 'none';
+        injuryBtn.classList.add('active');
+        injuryBtn.innerHTML = '<i class="fas fa-stopwatch"></i> Stop Injury Time';
+        injuryFab.classList.add('injury-active');
+        injuryFab.innerHTML = '<i class="fas fa-stopwatch"></i>';
+    } else if (matchState.totalInjurySeconds > 0) {
+        injuryTimeEl.style.display = 'none';
+        totalInjuryEl.textContent = getTotalInjuryTimeDisplay();
+        totalInjuryEl.style.display = 'block';
+        injuryBtn.classList.remove('active');
+        injuryBtn.innerHTML = '<i class="fas fa-stopwatch"></i> Injury Time';
+        injuryFab.classList.remove('injury-active');
+        injuryFab.innerHTML = '<i class="fas fa-stopwatch"></i>';
+    } else {
+        injuryTimeEl.style.display = 'none';
+        totalInjuryEl.style.display = 'none';
+        injuryBtn.classList.remove('active');
+        injuryBtn.innerHTML = '<i class="fas fa-stopwatch"></i> Injury Time';
+        injuryFab.classList.remove('injury-active');
+        injuryFab.innerHTML = '<i class="fas fa-stopwatch"></i>';
+    }
+    
+    if (matchState.isMatchStarted && !matchState.isHalfTime) {
         // เมื่อแข่งขันกำลังดำเนินอยู่
         matchControlsEl.style.display = 'none';
         injuryControlsEl.style.display = 'flex';
         injuryFab.style.display = 'flex';
+        
+        // อัปเดตข้อความปุ่มสำหรับครึ่งหลัง
+        if (!matchState.isFirstHalf) {
+            startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Second Half';
+        }
+    } else if (matchState.isHalfTime) {
+        // ในช่วงพักครึ่ง
+        matchControlsEl.style.display = 'flex';
+        injuryControlsEl.style.display = 'none';
+        injuryFab.style.display = 'none';
+        startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Second Half';
     } else {
         // ก่อนเริ่มการแข่งขัน
         matchControlsEl.style.display = 'flex';
@@ -450,64 +527,10 @@ function init() {
         injuryFab.style.display = 'none';
         startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Match';
     }
-        
-        updateSubstitutionButtonsState();
-        
-        // Format match time for display (considering halves)
-        matchTimeEl.textContent = matchState.elapsedTime;
-        
-        if (matchState.isInjuryTimeActive) {
-            injuryTimeEl.textContent = matchState.currentInjuryTimeDisplay;
-            injuryTimeEl.style.display = 'block';
-            totalInjuryEl.style.display = 'none';
-            injuryBtn.classList.add('active');
-            injuryBtn.innerHTML = '<i class="fas fa-stopwatch"></i> Stop Injury Time';
-            injuryFab.classList.add('injury-active');
-            injuryFab.innerHTML = '<i class="fas fa-stopwatch"></i>';
-        } else if (matchState.totalInjurySeconds > 0) {
-            injuryTimeEl.style.display = 'none';
-            totalInjuryEl.textContent = getTotalInjuryTimeDisplay();
-            totalInjuryEl.style.display = 'block';
-            injuryBtn.classList.remove('active');
-            injuryBtn.innerHTML = '<i class="fas fa-stopwatch"></i> Injury Time';
-            injuryFab.classList.remove('injury-active');
-            injuryFab.innerHTML = '<i class="fas fa-stopwatch"></i>';
-        } else {
-            injuryTimeEl.style.display = 'none';
-            totalInjuryEl.style.display = 'none';
-            injuryBtn.classList.remove('active');
-            injuryBtn.innerHTML = '<i class="fas fa-stopwatch"></i> Injury Time';
-            injuryFab.classList.remove('injury-active');
-            injuryFab.innerHTML = '<i class="fas fa-stopwatch"></i>';
-        }
-        
-        if (matchState.isMatchStarted && !matchState.isHalfTime) {
-            // When match is in progress
-            matchControlsEl.style.display = 'none';
-            injuryControlsEl.style.display = 'flex';
-            injuryFab.style.display = 'flex';
-            
-            // Update start button text for second half
-            if (!matchState.isFirstHalf) {
-                startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Second Half';
-            }
-        } else if (matchState.isHalfTime) {
-            // During half-time
-            matchControlsEl.style.display = 'flex';
-            injuryControlsEl.style.display = 'none';
-            injuryFab.style.display = 'none';
-            startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Second Half';
-        } else {
-            // Before match starts
-            matchControlsEl.style.display = 'flex';
-            injuryControlsEl.style.display = 'none';
-            injuryFab.style.display = 'none';
-            startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Match';
-        }
-        
-        renderTeamCards();
-        renderTeamSubstitutions();
-    }
+    
+    renderTeamCards();
+    renderTeamSubstitutions();
+}
 
     function updateSubstitutionButtonsState() {
         // Check for max 5 players substituted per team
@@ -1103,83 +1126,90 @@ function init() {
     }
 
     function showSubstitutionDialog(isTeamA, isHalfTime, windowToEdit = null) {
-        if (!matchState.isMatchStarted && !matchState.isHalfTime && !isHalfTime && !windowToEdit) {
-            alert('Please start the match first');
+    // ตรวจสอบว่าสามารถกดปุ่ม Half-time Sub ได้เฉพาะในช่วงพักครึ่งเท่านั้น
+    if (isHalfTime && !matchState.isHalfTime && !windowToEdit) {
+        alert('Half-time substitutions can only be made during half-time');
+        return;
+    }
+    
+    // ตรวจสอบว่าเกมเริ่มแล้วหรือยัง (สำหรับการเปลี่ยนตัวปกติ)
+    if (!matchState.isMatchStarted && !matchState.isHalfTime && !isHalfTime && !windowToEdit) {
+        alert('Please start the match first');
+        return;
+    }
+    
+    // ตรวจสอบจำนวนผู้เล่นที่เปลี่ยนตัวสูงสุด (5 คน)
+    const playerSubCount = getPlayerSubCount(isTeamA);
+    if (playerSubCount >= 5 && !windowToEdit) {
+        alert(`${isTeamA ? matchState.teamA.name : matchState.teamB.name} has already used all 5 player substitutions`);
+        return;
+    }
+    
+    // ตรวจสอบจำนวนช่วงเปลี่ยนตัวสูงสุด (3 ช่วง สำหรับการเปลี่ยนตัวปกติ ไม่รวมพักครึ่ง)
+    if (!isHalfTime && !windowToEdit && !matchState.activeSubWindow[isTeamA ? 'teamA' : 'teamB']) {
+        const team = isTeamA ? matchState.teamA : matchState.teamB;
+        if (team.subWindows >= 3) {
+            alert(`${team.name} has used all 3 substitution windows`);
             return;
         }
-        
-        // Check max player substitutions (5 players)
-        const playerSubCount = getPlayerSubCount(isTeamA);
-        if (playerSubCount >= 5 && !windowToEdit) {
-            alert(`${isTeamA ? matchState.teamA.name : matchState.teamB.name} has already used all 5 player substitutions`);
-            return;
-        }
-        
-        // Check for regular substitution windows (3 max, doesn't apply to half-time)
-        if (!isHalfTime && !windowToEdit && !matchState.activeSubWindow[isTeamA ? 'teamA' : 'teamB']) {
-            const team = isTeamA ? matchState.teamA : matchState.teamB;
-            if (team.subWindows >= 3) {
-                alert(`${team.name} has used all 3 substitution windows`);
-                return;
-            }
-        }
-        
-        currentSubContext = { isTeamA, isHalfTime, windowToEdit, additionalSubs: [] };
-        const teamName = isTeamA ? matchState.teamA.name : matchState.teamB.name;
-        const subType = isHalfTime ? "Half-time Substitution" : "Substitution";
-        subModalTitle.textContent = `${windowToEdit ? 'Edit ' : ''}${subType} - ${teamName}`;
-        playerInInput.value = '';
-        playerOutInput.value = '';
-        
-        const additionalSubsContainer = document.getElementById('additionalSubsContainer');
-        if (!additionalSubsContainer) {
-            const modalContent = subModal.querySelector('.modal-content');
-            modalContent.insertBefore(addAnotherSubSection, subModalActions);
-            document.getElementById('addAnotherSubBtn').addEventListener('click', addAnotherSubstitution);
+    }
+    
+    currentSubContext = { isTeamA, isHalfTime, windowToEdit, additionalSubs: [] };
+    const teamName = isTeamA ? matchState.teamA.name : matchState.teamB.name;
+    const subType = isHalfTime ? "Half-time Substitution" : "Substitution";
+    subModalTitle.textContent = `${windowToEdit ? 'Edit ' : ''}${subType} - ${teamName}`;
+    playerInInput.value = '';
+    playerOutInput.value = '';
+    
+    const additionalSubsContainer = document.getElementById('additionalSubsContainer');
+    if (!additionalSubsContainer) {
+        const modalContent = subModal.querySelector('.modal-content');
+        modalContent.insertBefore(addAnotherSubSection, subModalActions);
+        document.getElementById('addAnotherSubBtn').addEventListener('click', addAnotherSubstitution);
+    } else {
+        additionalSubsContainer.innerHTML = '';
+    }
+    
+    if (windowToEdit) {
+        let subs;
+        // ตรวจสอบว่ากำลังแก้ไขการเปลี่ยนตัวช่วงพักครึ่งหรือช่วงปกติ
+        if (isHalfTime || (windowToEdit && document.querySelector(`.event-card[data-id="${windowToEdit}"][data-half-time="true"]`))) {
+            subs = (isTeamA ? matchState.teamA.halfTimeSubstitutions : matchState.teamB.halfTimeSubstitutions)
+                .filter(sub => sub.windowId === windowToEdit || sub.id === windowToEdit);
         } else {
-            additionalSubsContainer.innerHTML = '';
+            subs = (isTeamA ? matchState.teamA.substitutions : matchState.teamB.substitutions)
+                .filter(sub => sub.windowId === windowToEdit || sub.id === windowToEdit);
         }
         
-        if (windowToEdit) {
-            let subs;
-            // Determine if we're editing a half-time sub or regular sub
-            if (isHalfTime || (windowToEdit && document.querySelector(`.event-card[data-id="${windowToEdit}"][data-half-time="true"]`))) {
-                subs = (isTeamA ? matchState.teamA.halfTimeSubstitutions : matchState.teamB.halfTimeSubstitutions)
-                    .filter(sub => sub.windowId === windowToEdit || sub.id === windowToEdit);
-            } else {
-                subs = (isTeamA ? matchState.teamA.substitutions : matchState.teamB.substitutions)
-                    .filter(sub => sub.windowId === windowToEdit || sub.id === windowToEdit);
-            }
-            
-            if (subs.length > 0) {
-                playerInInput.value = subs[0].playerInNumber;
-                playerOutInput.value = subs[0].playerOutNumber;
-                if (subs.length > 1) {
-                    for (let i = 1; i < subs.length; i++) {
-                        const newSubFields = createSubstitutionFields(subs[i].playerInNumber, subs[i].playerOutNumber);
-                        document.getElementById('additionalSubsContainer').appendChild(newSubFields);
-                    }
+        if (subs.length > 0) {
+            playerInInput.value = subs[0].playerInNumber;
+            playerOutInput.value = subs[0].playerOutNumber;
+            if (subs.length > 1) {
+                for (let i = 1; i < subs.length; i++) {
+                    const newSubFields = createSubstitutionFields(subs[i].playerInNumber, subs[i].playerOutNumber);
+                    document.getElementById('additionalSubsContainer').appendChild(newSubFields);
                 }
             }
-            
-            let deleteBtn = document.getElementById('deleteSubWindowBtn');
-            if (!deleteBtn) {
-                deleteBtn = document.createElement('button');
-                deleteBtn.id = 'deleteSubWindowBtn';
-                deleteBtn.className = 'modal-btn delete-btn';
-                deleteBtn.textContent = 'Delete This Substitution Window';
-                deleteBtn.addEventListener('click', deleteSubstitutionWindow);
-                subModalActions.insertBefore(deleteBtn, cancelSubBtn);
-            }
-        } else {
-            const deleteBtn = document.getElementById('deleteSubWindowBtn');
-            if (deleteBtn) deleteBtn.remove();
         }
         
-        saveSubBtn.style.backgroundColor = isTeamA ? matchState.teamA.color : matchState.teamB.color;
-        subModal.style.display = 'flex';
-        playerInInput.focus();
+        let deleteBtn = document.getElementById('deleteSubWindowBtn');
+        if (!deleteBtn) {
+            deleteBtn = document.createElement('button');
+            deleteBtn.id = 'deleteSubWindowBtn';
+            deleteBtn.className = 'modal-btn delete-btn';
+            deleteBtn.textContent = 'Delete This Substitution Window';
+            deleteBtn.addEventListener('click', deleteSubstitutionWindow);
+            subModalActions.insertBefore(deleteBtn, cancelSubBtn);
+        }
+    } else {
+        const deleteBtn = document.getElementById('deleteSubWindowBtn');
+        if (deleteBtn) deleteBtn.remove();
     }
+    
+    saveSubBtn.style.backgroundColor = isTeamA ? matchState.teamA.color : matchState.teamB.color;
+    subModal.style.display = 'flex';
+    playerInInput.focus();
+}
 
     function createSubstitutionFields(playerIn = '', playerOut = '') {
         const subFieldsContainer = document.createElement('div');
