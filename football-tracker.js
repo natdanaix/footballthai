@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isHalfTime: false,
         startTime: null,
         elapsedTime: "00:00",
-        currentHalfTime: 45 * 60, // 45 minutes in seconds
+        currentHalfTime: 2 * 60, // 45 minutes in seconds
         teamA: {
             name: "Team A",
             color: "#1976D2",
@@ -744,9 +744,9 @@ document.addEventListener('DOMContentLoaded', function() {
             matchState.isFirstHalf = false;
             
             // Set elapsed time to start at 45:00
-            matchState.elapsedTime = "45:00";
+            matchState.elapsedTime = "2:00";
             const now = new Date();
-            matchState.startTime = new Date(now.getTime() - (45 * 60 * 1000)); // Set start time 45 minutes earlier
+            matchState.startTime = new Date(now.getTime() - (2 * 60 * 1000)); // Set start time 45 minutes earlier
         } else {
             // Starting first half
             matchState.startTime = new Date();
@@ -793,10 +793,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const seconds = totalSeconds % 60;
         
         // Check for half-time or end of match
-        if (matchState.isFirstHalf && minutes >= 45 && seconds >= 0 && !matchState.isInjuryTimeActive) {
+        if (matchState.isFirstHalf && minutes >= 2 && seconds >= 0 && !matchState.isInjuryTimeActive) {
             // First half is over, stop timer and prepare for injury time
             clearInterval(matchTimer);
-            minutes = 45; // Lock at 45:00
+            minutes = 2; // Lock at 45:00
             
             // Check if we have injury time
             if (matchState.totalInjurySeconds > 0) {
@@ -805,10 +805,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 // No injury time, go directly to half-time
                 endFirstHalf();
             }
-        } else if (!matchState.isFirstHalf && minutes >= 90 && seconds >= 0 && !matchState.isInjuryTimeActive) {
+        } else if (!matchState.isFirstHalf && minutes >= 4 && seconds >= 0 && !matchState.isInjuryTimeActive) {
             // Second half is over, stop timer and prepare for injury time
             clearInterval(matchTimer);
-            minutes = 90; // Lock at 90:00
+            minutes = 4; // Lock at 90:00
             
             // Check if we have injury time
             if (matchState.totalInjurySeconds > 0) {
@@ -874,7 +874,7 @@ document.addEventListener('DOMContentLoaded', function() {
         matchState.currentInjuryTimeDisplay = "+00:00";
         
         // Lock display at 45:00
-        matchState.elapsedTime = "45:00";
+        matchState.elapsedTime = "2:00";
         
         // Update UI and save data
         updateUI();
