@@ -1,4 +1,4 @@
-/* Enhanced styles with 3D buttons, vertical cards, and black/white color support */
+/* Enhanced styles with 3D buttons and vertical cards */
 
 :root {
     --team-a-color: #1976D2;
@@ -598,14 +598,11 @@ header {
     box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
 }
 
-/* Enhanced color picker with support for black and white */
 .color-picker {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 8px;
-    max-width: 300px;
-    justify-content: center;
 }
 
 .color-option {
@@ -615,51 +612,15 @@ header {
     cursor: pointer;
     border: 2px solid transparent;
     transition: transform 0.2s ease;
-    position: relative;
-}
-
-/* Special styling for white color option */
-.color-option[style*="background-color: rgb(255, 255, 255)"],
-.color-option[style*="background-color: #FFFFFF"] {
-    border: 1px solid #CCCCCC;
-}
-
-/* Enhance the selection indicator */
-.color-option.selected {
-    border-color: #333;
-    transform: scale(1.1);
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
-}
-
-/* Special styling for selected black color */
-.color-option.selected[style*="background-color: rgb(0, 0, 0)"],
-.color-option.selected[style*="background-color: #000000"] {
-    border-color: #999;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
 .color-option:hover {
     transform: scale(1.1);
 }
 
-/* Add checkmark indicator for selected color */
-.color-option.selected::after {
-    content: "✓";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
-    font-size: 16px;
-    font-weight: bold;
-}
-
-/* Special styling for white color checkmark */
-.color-option.selected[style*="background-color: rgb(255, 255, 255)"]::after,
-.color-option.selected[style*="background-color: #FFFFFF"]::after {
-    color: #333;
-    text-shadow: none;
+.color-option.selected {
+    border-color: black;
+    transform: scale(1.1);
 }
 
 .modal-actions {
@@ -843,52 +804,4 @@ header {
 .sub-window {
     display: flex;
     flex-direction: column;
-}
-
-/* Media queries for better responsiveness */
-@media (max-width: 768px) {
-    .teams-container {
-        flex-direction: column;
-        height: auto;
-    }
-    
-    .team-panel {
-        margin-bottom: 15px;
-    }
-    
-    .divider {
-        width: 100%;
-        height: 2px;
-        margin: 10px 0;
-    }
-    
-    .team-content {
-        max-height: 300px;
-    }
-}
-
-/* Special styling for buttons with black or white backgrounds */
-.action-btn[style*="background-color: rgb(0, 0, 0)"],
-.action-btn[style*="background-color: #000000"] {
-    color: white;
-    border-bottom: 4px solid #333333;
-}
-
-.action-btn[style*="background-color: rgb(255, 255, 255)"],
-.action-btn[style*="background-color: #FFFFFF"] {
-    color: black;
-    border-bottom: 4px solid #CCCCCC;
-    text-shadow: none;
-}
-
-/* Special styling for team headers with black or white backgrounds */
-.team-header[style*="background-color: rgb(0, 0, 0)"],
-.team-header[style*="background-color: #000000"] {
-    color: white;
-}
-
-.team-header[style*="background-color: rgb(255, 255, 255)"],
-.team-header[style*="background-color: #FFFFFF"] {
-    color: black;
-    text-shadow: none;
 }
