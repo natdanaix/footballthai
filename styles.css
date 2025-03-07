@@ -277,6 +277,8 @@ header {
     border-top-right-radius: 8px;
 }
 
+/* ส่วน team-header ถูกลบออกแล้ว */
+
 /* Action Buttons With 3D Effect */
 .team-actions {
     display: grid;
