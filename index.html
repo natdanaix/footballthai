@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THAI LEAGUE</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">THAI LEAGUE</div>
+                <button class="settings-btn" id="settingsBtn">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+            <div class="timer-container">
+                <div class="team-score" id="teamAScore">0</div>
+                <div class="match-time" id="matchTime">00:00</div>
+                <div class="team-score" id="teamBScore">0</div>
+                <div class="injury-time" id="injuryTime" style="display: none;">+00:00</div>
+                <div class="total-injury" id="totalInjury" style="display: none;">+00:00</div>
+            </div>
+        </header>
+        
+        <div class="match-controls" id="matchControls">
+            <button class="control-btn start-btn" id="startMatchBtn">
+                <i class="fas fa-play"></i> Start Match
+            </button>
+            <button class="control-btn reset-btn" id="resetDataBtn">
+                <i class="fas fa-undo"></i> Reset Data
+            </button>
+        </div>
+        
+        <div class="match-controls" id="injuryControls" style="display: none;">
+            <button class="control-btn injury-btn" id="injuryBtn">
+                <i class="fas fa-stopwatch"></i> Injury Time
+            </button>
+            <button class="control-btn end-btn" id="endMatchBtn" style="background-color: #757575; color: white;">
+                <i class="fas fa-stop"></i> End Match
+            </button>
+        </div>
+        
+        <div class="teams-container">
+            <!-- Team A Panel -->
+            <div class="team-panel team-a">
+                <div class="team-header" id="teamAHeader">Team A</div>
+                <div class="team-actions">
+                    <button class="action-btn yellow-btn" id="teamAYellowBtn">Yellow Card</button>
+                    <button class="action-btn red-btn" id="teamARedBtn">Red Card</button>
+                    <button class="action-btn goal-btn" id="teamAGoalBtn">Goal</button>
+                    <button class="action-btn sub-btn-a" id="teamASubBtn">Substitution</button>
+                </div>
+                <div class="team-content">
+                    <div class="tab-container">
+                        <div class="tabs">
+                            <div class="tab active" data-team="a" data-tab="cards">Cards</div>
+                            <div class="tab" data-team="a" data-tab="subs">Substitutions</div>
+                        </div>
+                        <div class="tab-content active" id="teamACardsContent">
+                            <div class="empty-state" id="teamACardsEmpty">
+                                <i class="fas fa-square empty-icon"></i>
+                                <p>No Data Yet</p>
+                            </div>
+                        </div>
+                        <div class="tab-content" id="teamASubsContent">
+                            <div class="empty-state" id="teamASubsEmpty">
+                                <i class="fas fa-exchange-alt empty-icon"></i>
+                                <p>No Data Yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Divider -->
+            <div class="divider"></div>
+            
+            <!-- Team B Panel -->
+            <div class="team-panel team-b">
+                <div class="team-header" id="teamBHeader">Team B</div>
+                <div class="team-actions">
+                    <button class="action-btn yellow-btn" id="teamBYellowBtn">Yellow Card</button>
+                    <button class="action-btn red-btn" id="teamBRedBtn">Red Card</button>
+                    <button class="action-btn goal-btn" id="teamBGoalBtn">Goal</button>
+                    <button class="action-btn sub-btn-b" id="teamBSubBtn">Substitution</button>
+                </div>
+                <div class="team-content">
+                    <div class="tab-container">
+                        <div class="tabs">
+                            <div class="tab active" data-team="b" data-tab="cards">Cards</div>
+                            <div class="tab" data-team="b" data-tab="subs">Substitutions</div>
+                        </div>
+                        <div class="tab-content active" id="teamBCardsContent">
+                            <div class="empty-state" id="teamBCardsEmpty">
+                                <i class="fas fa-square empty-icon"></i>
+                                <p>No Data Yet</p>
+                            </div>
+                        </div>
+                        <div class="tab-content" id="teamBSubsContent">
+                            <div class="empty-state" id="teamBSubsEmpty">
+                                <i class="fas fa-exchange-alt empty-icon"></i>
+                                <p>No Data Yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating action button for injury time -->
+        <button class="fab" id="injuryFab" style="display: none;">
+            <i class="fas fa-stopwatch"></i>
+        </button>
+    </div>
+    
+    <!-- Team Settings Modal -->
+    <div class="modal" id="teamSettingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Team Settings</div>
+                <button class="close-btn" id="closeTeamSettingsBtn">×</button>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Team 1</div>
+                <input type="text" class="input-field" id="teamANameInput" placeholder="Team Name">
+                <div class="input-label" style="margin-top: 10px;">Select Team Color</div>
+                <div class="color-picker" id="teamAColorPicker"></div>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Team 2</div>
+                <input type="text" class="input-field" id="teamBNameInput" placeholder="Team Name">
+                <div class="input-label" style="margin-top: 10px;">Select Team Color</div>
+                <div class="color-picker" id="teamBColorPicker"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel-btn" id="cancelTeamSettingsBtn">Cancel</button>
+                <button class="modal-btn confirm-btn" id="saveTeamSettingsBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Card Event Modal -->
+    <div class="modal" id="cardModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="cardModalTitle">Yellow Card - Team A</div>
+                <button class="close-btn" id="closeCardModalBtn">×</button>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Player Number</div>
+                <input type="number" class="input-field" id="playerNumberInput" placeholder="Player Number">
+            </div>
+            <div class="modal-actions" id="cardModalActions">
+                <button class="modal-btn cancel-btn" id="cancelCardBtn">Cancel</button>
+                <button class="modal-btn confirm-btn" id="saveCardBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Substitution Event Modal -->
+    <div class="modal" id="subModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="subModalTitle">Substitution - Team A</div>
+                <button class="close-btn" id="closeSubModalBtn">×</button>
+            </div>
+            <div class="input-group">
+                <div class="input-label">Player In Number</div>
+                <input type="number" class="input-field" id="playerInInput" placeholder="Player In Number">
+            </div>
+            <div class="input-group">
+                <div class="input-label">Player Out Number</div>
+                <input type="number" class="input-field" id="playerOutInput" placeholder="Player Out Number">
+            </div>
+            <div class="modal-actions" id="subModalActions">
+                <button class="modal-btn cancel-btn" id="cancelSubBtn">Cancel</button>
+                <button class="modal-btn confirm-btn" id="saveSubBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Injury Time Summary Modal -->
+    <div class="modal" id="injurySummaryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Injury Time Summary</div>
+                <button class="close-btn" id="closeInjurySummaryBtn">×</button>
+            </div>
+            <div id="injurySummaryContent"></div>
+            <div class="modal-actions">
+                <button class="modal-btn confirm-btn" id="closeInjurySummaryConfirmBtn">OK</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reset Confirmation Modal -->
+    <div class="modal" id="resetConfirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Reset Data</div>
+                <button class="close-btn" id="closeResetConfirmBtn">×</button>
+            </div>
+            <p>Do you want to reset all data?</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel-btn" id="cancelResetBtn">Cancel</button>
+                <button class="modal-btn delete-btn" id="confirmResetBtn">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Match Summary Modal -->
+    <div class="modal" id="matchSummaryModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <div class="modal-title">Match Summary</div>
+                <button class="close-btn" id="closeMatchSummaryBtn">×</button>
+            </div>
+            <div class="summary-container" id="matchSummaryContent"></div>
+            <div class="modal-actions">
+                <button class="modal-btn confirm-btn" id="saveAsPdfBtn">Save as PDF</button>
+                <button class="modal-btn confirm-btn" id="closeMatchSummaryConfirmBtn">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="football-tracker.js"></script>
+</body>
+</html>

@@ -1,0 +1,807 @@
+/* Enhanced styles with 3D buttons and vertical cards */
+
+:root {
+    --team-a-color: #1976D2;
+    --team-a-dark: #0D47A1;
+    --team-a-light: #E3F2FD;
+    --team-b-color: #D32F2F;
+    --team-b-dark: #B71C1C;
+    --team-b-light: #FFEBEE;
+    --neutral-bg: #F5F5F5;
+    --yellow-card: #FFC107;
+    --yellow-card-dark: #FFA000;
+    --red-card: #D32F2F;
+    --red-card-dark: #B71C1C;
+    --goal-color: #4CAF50;
+    --goal-color-dark: #2E7D32;
+    --text-primary: #212121;
+    --text-secondary: #757575;
+    --text-light: #FFFFFF;
+    --border-color: #E0E0E0;
+    --button-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    --button-pressed-shadow: 0 2px 0 rgba(0,0,0,0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--neutral-bg);
+    color: var(--text-primary);
+    font-size: 16px;
+    line-height: 1.5;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+}
+
+header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://competition.tl.prod.c0d1um.io/media/tournament/thaileague_header_logo/20240804-190803-88871be9-d119-4e5e-9a9b-25574adf587e.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    min-height: 120px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.settings-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.settings-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: rotate(30deg);
+}
+
+.timer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    padding: 0 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.match-time {
+    background-color: #0D47A1;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 12px;
+    order: 2;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.team-score {
+    background-color: #FFFFFF;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    min-width: 40px;
+    text-align: center;
+}
+
+#teamAScore {
+    order: 1;
+}
+
+#teamBScore {
+    order: 3;
+}
+
+.injury-time {
+    background-color: #D32F2F;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 12px;
+    order: 4;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.total-injury {
+    background-color: #FF9800;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 12px;
+    order: 5;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.match-controls {
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    gap: 15px;
+}
+
+/* 3D Buttons Styling */
+.control-btn {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+    position: relative;
+    transition: all 0.1s ease;
+    transform: translateY(-2px);
+    box-shadow: var(--button-shadow);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+    box-shadow: var(--button-pressed-shadow);
+}
+
+.start-btn {
+    background-color: #4CAF50;
+    color: white;
+    border-bottom: 4px solid #2E7D32;
+}
+
+.start-btn:active {
+    border-bottom-width: 2px;
+}
+
+.reset-btn {
+    background-color: #D32F2F;
+    color: white;
+    border-bottom: 4px solid #B71C1C;
+}
+
+.reset-btn:active {
+    border-bottom-width: 2px;
+}
+
+.injury-btn {
+    background-color: #4CAF50;
+    color: white;
+    border-bottom: 4px solid #2E7D32;
+}
+
+.injury-btn:active {
+    border-bottom-width: 2px;
+}
+
+.injury-btn.active {
+    background-color: #D32F2F;
+    border-bottom: 4px solid #B71C1C;
+}
+
+.teams-container {
+    display: flex;
+    height: calc(100vh - 180px);
+}
+
+.team-panel {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-a {
+    background-color: var(--team-a-light);
+}
+
+.team-b {
+    background-color: var(--team-b-light);
+}
+
+.team-header {
+    padding: 12px;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.team-a .team-header {
+    background-color: var(--team-a-color);
+}
+
+.team-b .team-header {
+    background-color: var(--team-b-color);
+}
+
+/* Action Buttons With 3D Effect */
+.team-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 10px 0;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+    position: relative;
+    transition: all 0.1s ease;
+    transform: translateY(-2px);
+    box-shadow: var(--button-shadow);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+/* Make yellow and red cards fit the top row with increased height */
+.yellow-btn, .red-btn {
+    grid-row: 1;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Add card icon visual indicator */
+.yellow-btn::before, .red-btn::before {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 36px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+}
+
+.yellow-btn::before {
+    background-color: var(--yellow-card-dark);
+    grid-column: 1;
+}
+
+.red-btn::before {
+    background-color: var(--red-card-dark);
+    grid-column: 2;
+}
+
+/* Make goal and substitution buttons fit the bottom row */
+.goal-btn {
+    grid-row: 2;
+    grid-column: 1 / span 2;
+    height: 50px;
+}
+
+.sub-btn-a, .sub-btn-b {
+    grid-row: 3;
+    grid-column: 1 / span 2;
+    height: 50px;
+}
+
+.action-btn:active {
+    transform: translateY(0);
+    box-shadow: var(--button-pressed-shadow);
+}
+
+.yellow-btn {
+    background-color: var(--yellow-card);
+    color: var(--text-primary);
+    border-bottom: 4px solid var(--yellow-card-dark);
+}
+
+.yellow-btn:active {
+    border-bottom-width: 2px;
+}
+
+.red-btn {
+    background-color: var(--red-card);
+    color: white;
+    border-bottom: 4px solid var(--red-card-dark);
+}
+
+.red-btn:active {
+    border-bottom-width: 2px;
+}
+
+.goal-btn {
+    background-color: var(--goal-color);
+    color: white;
+    border-bottom: 4px solid var(--goal-color-dark);
+}
+
+.goal-btn:active {
+    border-bottom-width: 2px;
+}
+
+.sub-btn-a {
+    background-color: var(--team-a-color);
+    color: white;
+    border-bottom: 4px solid var(--team-a-dark);
+}
+
+.sub-btn-a:active {
+    border-bottom-width: 2px;
+}
+
+.sub-btn-b {
+    background-color: var(--team-b-color);
+    color: white;
+    border-bottom: 4px solid var(--team-b-dark);
+}
+
+.sub-btn-b:active {
+    border-bottom-width: 2px;
+}
+
+.team-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.tab-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 10px;
+}
+
+.tab {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--text-secondary);
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.tab:hover {
+    background-color: rgba(0,0,0,0.03);
+}
+
+.tab.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--team-a-color);
+}
+
+.team-b .tab.active {
+    border-bottom-color: var(--team-b-color);
+}
+
+.tab-content {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Vertical Card Layout */
+.event-card {
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    transition: transform 0.2s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.event-icon {
+    margin-bottom: 8px;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 30px;
+}
+
+.yellow-icon {
+    color: var(--yellow-card);
+}
+
+.red-icon {
+    color: var(--red-card);
+}
+
+.goal-icon {
+    color: var(--goal-color);
+}
+
+.sub-icon-a {
+    color: var(--team-a-color);
+}
+
+.sub-icon-b {
+    color: var(--team-b-color);
+}
+
+.event-details {
+    flex: 1;
+}
+
+.event-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.event-time {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+}
+
+.edit-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: rgba(0,0,0,0.05);
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+    background: rgba(0,0,0,0.1);
+    color: var(--text-primary);
+}
+
+.divider {
+    width: 2px;
+    background-color: var(--border-color);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    width: 90%;
+    max-width: 350px;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.modal-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: var(--text-primary);
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.input-field:focus {
+    border-color: #2196F3;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+}
+
+.color-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s ease;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-option.selected {
+    border-color: black;
+    transform: scale(1.1);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.modal-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.1s ease;
+    transform: translateY(-2px);
+    box-shadow: var(--button-shadow);
+}
+
+.modal-btn:active {
+    transform: translateY(0);
+    box-shadow: var(--button-pressed-shadow);
+}
+
+.cancel-btn {
+    background-color: var(--neutral-bg);
+    color: var(--text-primary);
+    border-bottom: 4px solid #BDBDBD;
+}
+
+.cancel-btn:active {
+    border-bottom-width: 2px;
+}
+
+.confirm-btn {
+    background-color: #2196F3;
+    color: white;
+    border-bottom: 4px solid #0D47A1;
+}
+
+.confirm-btn:active {
+    border-bottom-width: 2px;
+}
+
+.delete-btn {
+    background-color: #D32F2F;
+    color: white;
+    border-bottom: 4px solid #B71C1C;
+}
+
+.delete-btn:active {
+    border-bottom-width: 2px;
+}
+
+.fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: none;
+    cursor: pointer;
+    z-index: 90;
+    transition: all 0.3s ease;
+}
+
+.fab:hover {
+    transform: scale(1.1);
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+
+.fab.injury-active {
+    background-color: #D32F2F;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-secondary);
+    padding: 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.summary-container {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.substitution-fields {
+    margin-top: 15px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+}
+
+.sub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.remove-sub-btn {
+    background: rgba(0,0,0,0.05);
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.remove-sub-btn:hover {
+    background: rgba(0,0,0,0.1);
+    color: var(--text-primary);
+}
+
+.add-btn {
+    background-color: #4CAF50;
+    color: white;
+    margin-top: 10px;
+    border-bottom: 4px solid #2E7D32;
+}
+
+.add-btn:active {
+    border-bottom-width: 2px;
+}
+
+.action-btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Substitution list vertical layout */
+.substitutions-list {
+    margin-top: 8px;
+}
+
+.sub-entry {
+    background-color: rgba(0,0,0,0.03);
+    padding: 6px 10px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.player-numbers {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* Fix for vertical sub windows */
+.sub-window {
+    display: flex;
+    flex-direction: column;
+}
