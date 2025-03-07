@@ -520,7 +520,7 @@ function createSecondHalfConfirmModal() {
         localStorage.removeItem('matchData');
     }
 
-  function updateUI() {
+ function updateUI() {
     // อัพเดทชื่อทีมในส่วนหัวข้อด้านบน
     const teamAHeaderBox = document.getElementById('teamAHeaderBox');
     const teamBHeaderBox = document.getElementById('teamBHeaderBox');
@@ -534,12 +534,6 @@ function createSecondHalfConfirmModal() {
         teamBHeaderBox.textContent = matchState.teamB.name;
         teamBHeaderBox.style.backgroundColor = matchState.teamB.color;
     }
-    
-    // อัพเดทหัวข้อทีม (ส่วนด้านบนของแต่ละฝั่ง)
-    teamAHeader.textContent = matchState.teamA.name;
-    teamAHeader.style.backgroundColor = matchState.teamA.color;
-    teamBHeader.textContent = matchState.teamB.name;
-    teamBHeader.style.backgroundColor = matchState.teamB.color;
     
     // อัพเดทคะแนนในส่วนหัว
     const teamAScoreEl = document.getElementById('teamAScore');
