@@ -10,27 +10,30 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <div class="header-content">
-                <div class="logo">THAI LEAGUE</div>
-                <button class="settings-btn" id="settingsBtn">
-                    <i class="fas fa-cog"></i>
-                </button>
-            </div>
-           <div class="timer-container">
-    <div class="team-info">
-        <div class="team-name team-name-a" id="teamAName">Team A</div>
+      <!-- ส่วนที่ต้องแก้ไขใน HTML (index.html) -->
+
+<header>
+    <div class="header-content">
+        <div class="logo">THAI LEAGUE</div>
+        <button class="settings-btn" id="settingsBtn">
+            <i class="fas fa-cog"></i>
+        </button>
+    </div>
+    
+    <!-- เพิ่มส่วนแสดงชื่อทีมด้านบน -->
+    <div class="teams-header">
+        <div class="team-header-box" id="teamAHeaderBox">Team A</div>
+        <div class="team-header-box" id="teamBHeaderBox">Team B</div>
+    </div>
+    
+    <div class="timer-container">
         <div class="team-score" id="teamAScore">0</div>
-    </div>
-    <div class="match-time" id="matchTime">00:00</div>
-    <div class="team-info">
-        <div class="team-name team-name-b" id="teamBName">Team B</div>
+        <div class="match-time" id="matchTime">00:00</div>
         <div class="team-score" id="teamBScore">0</div>
+        <div class="injury-time" id="injuryTime" style="display: none;">+00:00</div>
+        <div class="total-injury" id="totalInjury" style="display: none;">+00:00</div>
     </div>
-    <div class="injury-time" id="injuryTime" style="display: none;">+00:00</div>
-    <div class="total-injury" id="totalInjury" style="display: none;">+00:00</div>
-</div>
-        </header>
+</header>
         
         <div class="match-controls" id="matchControls">
             <button class="control-btn start-btn" id="startMatchBtn">
