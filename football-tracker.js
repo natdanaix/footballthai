@@ -155,11 +155,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveAsPdfBtn = document.getElementById('saveAsPdfBtn');
 
     // Available team colors
-    const availableColors = [
-        '#1976D2', '#D32F2F', '#4CAF50', '#FF9800', '#9C27B0',
-        '#009688', '#3F51B5', '#E91E63', '#FFC107', '#00BCD4',
-        '#FF5722', '#673AB7', '#03A9F4', '#8BC34A'
-    ];
+  const availableColors = [
+    '#1976D2', // น้ำเงิน
+    '#D32F2F', // แดง
+    '#4CAF50', // เขียว
+    '#FF9800', // ส้ม
+    '#9C27B0', // ม่วง
+    '#009688', // เขียวมิ้นท์
+    '#3F51B5', // น้ำเงิน indigo
+    '#E91E63', // ชมพู
+    '#FFC107', // เหลือง amber
+    '#00BCD4', // ฟ้า cyan
+    '#FF5722', // ส้มแดง deep orange
+    '#673AB7', // ม่วง deep purple
+    '#03A9F4', // ฟ้า light blue
+    '#8BC34A', // เขียวอ่อน light green
+    '#000000', // ดำ (เพิ่มใหม่)
+    '#FFFFFF'  // ขาว (เพิ่มใหม่)
+];
 
     // Variables to track current modal context
     let currentCardContext = {
