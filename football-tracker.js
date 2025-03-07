@@ -181,6 +181,7 @@ function init() {
     createHalfTimeSubButtons();
     // คอมเมนต์บรรทัดนี้ออกถ้าไม่ต้องการสร้าง halfTimeModal
     // createHalfTimeModal(); 
+    createSecondHalfConfirmModal(); // เพิ่มการสร้าง modal ยืนยันเริ่มครึ่งหลัง
     loadSavedMatchData();
     setupEventListeners();
     initColorPickers();
@@ -190,7 +191,47 @@ function init() {
     }
     updateSubstitutionButtonsState();
 }
-
+    
+function createSecondHalfConfirmModal() {
+    // ตรวจสอบว่ามี modal อยู่แล้วหรือไม่
+    if (document.getElementById('secondHalfConfirmModal')) {
+        return;
+    }
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.id = 'secondHalfConfirmModal';
+    
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">เริ่มครึ่งหลัง</div>
+                <button class="close-btn" id="closeSecondHalfConfirmBtn">×</button>
+            </div>
+            <p>คุณพร้อมที่จะเริ่มการแข่งขันครึ่งหลังใช่หรือไม่?</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel-btn" id="cancelSecondHalfBtn">ยกเลิก</button>
+                <button class="modal-btn confirm-btn" id="confirmSecondHalfBtn">ยืนยัน</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // เพิ่ม Event Listeners
+    document.getElementById('closeSecondHalfConfirmBtn').addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+    
+    document.getElementById('cancelSecondHalfBtn').addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+    
+    document.getElementById('confirmSecondHalfBtn').addEventListener('click', () => {
+        modal.style.display = 'none';
+        startMatch(); // เรียกใช้ฟังก์ชันเริ่มการแข่งขัน
+    });
+}
     // Create half-time substitution buttons
     function createHalfTimeSubButtons() {
         // Create Team A half-time sub button
@@ -247,8 +288,18 @@ function init() {
     }
 
     // Set up all event listeners
-   function setupEventListeners() {
-    startMatchBtn.addEventListener('click', startMatch);
+  function setupEventListeners() {
+    // ปุ่มเริ่มการแข่งขัน (เพิ่มการตรวจสอบว่าเป็นครึ่งหลังหรือไม่)
+    startMatchBtn.addEventListener('click', () => {
+        if (matchState.isHalfTime) {
+            // ถ้าเป็นครึ่งหลัง แสดง popup ยืนยัน
+            showSecondHalfConfirmDialog();
+        } else {
+            // ถ้าเป็นครึ่งแรก เริ่มเกมได้เลย
+            startMatch();
+        }
+    });
+
     injuryBtn.addEventListener('click', toggleInjuryTime);
     injuryFab.addEventListener('click', toggleInjuryTime);
     endMatchBtn.addEventListener('click', endMatch);
@@ -350,8 +401,35 @@ function init() {
     }
     
     if (document.getElementById('startSecondHalfBtn')) {
-        document.getElementById('startSecondHalfBtn').addEventListener('click', startSecondHalf);
+        document.getElementById('startSecondHalfBtn').addEventListener('click', showSecondHalfConfirmDialog);
     }
+
+    // เพิ่ม Event Listeners สำหรับ Second Half Confirm Modal
+    if (document.getElementById('closeSecondHalfConfirmBtn')) {
+        document.getElementById('closeSecondHalfConfirmBtn').addEventListener('click', () => {
+            document.getElementById('secondHalfConfirmModal').style.display = 'none';
+        });
+    }
+    
+    if (document.getElementById('cancelSecondHalfBtn')) {
+        document.getElementById('cancelSecondHalfBtn').addEventListener('click', () => {
+            document.getElementById('secondHalfConfirmModal').style.display = 'none';
+        });
+    }
+    
+    if (document.getElementById('confirmSecondHalfBtn')) {
+        document.getElementById('confirmSecondHalfBtn').addEventListener('click', () => {
+            document.getElementById('secondHalfConfirmModal').style.display = 'none';
+            startMatch();
+        });
+    }
+}
+    function showSecondHalfConfirmDialog() {
+    const modal = document.getElementById('secondHalfConfirmModal');
+    if (!modal) {
+        createSecondHalfConfirmModal();
+    }
+    document.getElementById('secondHalfConfirmModal').style.display = 'flex';
 }
     // Initialize color pickers
     function initColorPickers() {
@@ -800,11 +878,11 @@ function init() {
         saveMatchData();
     }
 
-   function startSecondHalf() {
+  function startSecondHalf() {
     if (halfTimeModal && halfTimeModal.style.display === 'flex') {
         halfTimeModal.style.display = 'none';
     }
-    startMatch();
+    showSecondHalfConfirmDialog();
 }
     function startTimers() {
         clearInterval(matchTimer);
