@@ -521,23 +521,25 @@ function createSecondHalfConfirmModal() {
     }
 
   function updateUI() {
+    // อัพเดทชื่อทีมในส่วนหัวข้อด้านบน
+    const teamAHeaderBox = document.getElementById('teamAHeaderBox');
+    const teamBHeaderBox = document.getElementById('teamBHeaderBox');
+    
+    if (teamAHeaderBox) {
+        teamAHeaderBox.textContent = matchState.teamA.name;
+        teamAHeaderBox.style.backgroundColor = matchState.teamA.color;
+    }
+    
+    if (teamBHeaderBox) {
+        teamBHeaderBox.textContent = matchState.teamB.name;
+        teamBHeaderBox.style.backgroundColor = matchState.teamB.color;
+    }
+    
     // อัพเดทหัวข้อทีม (ส่วนด้านบนของแต่ละฝั่ง)
     teamAHeader.textContent = matchState.teamA.name;
     teamAHeader.style.backgroundColor = matchState.teamA.color;
     teamBHeader.textContent = matchState.teamB.name;
     teamBHeader.style.backgroundColor = matchState.teamB.color;
-    
-    // อัพเดทชื่อทีมข้างสกอร์
-    const teamANameEl = document.getElementById('teamAName');
-    const teamBNameEl = document.getElementById('teamBName');
-    
-    if (teamANameEl) {
-        teamANameEl.textContent = matchState.teamA.name;
-    }
-    
-    if (teamBNameEl) {
-        teamBNameEl.textContent = matchState.teamB.name;
-    }
     
     // อัพเดทคะแนนในส่วนหัว
     const teamAScoreEl = document.getElementById('teamAScore');
@@ -1120,22 +1122,36 @@ function createSecondHalfConfirmModal() {
     }
 
     function saveTeamSettings() {
-        const teamAName = teamANameInput.value.trim() || 'Team A';
-        const teamBName = teamBNameInput.value.trim() || 'Team B';
-        const teamAColorOption = document.querySelector('#teamAColorPicker .color-option.selected');
-        const teamBColorOption = document.querySelector('#teamBColorPicker .color-option.selected');
-        const teamAColor = teamAColorOption ? teamAColorOption.style.backgroundColor : matchState.teamA.color;
-        const teamBColor = teamBColorOption ? teamBColorOption.style.backgroundColor : matchState.teamB.color;
-        
-        matchState.teamA.name = teamAName;
-        matchState.teamA.color = teamAColor;
-        matchState.teamB.name = teamBName;
-        matchState.teamB.color = teamBColor;
-        
-        updateUI();
-        saveMatchData();
-        teamSettingsModal.style.display = 'none';
+    const teamAName = teamANameInput.value.trim() || 'Team A';
+    const teamBName = teamBNameInput.value.trim() || 'Team B';
+    const teamAColorOption = document.querySelector('#teamAColorPicker .color-option.selected');
+    const teamBColorOption = document.querySelector('#teamBColorPicker .color-option.selected');
+    const teamAColor = teamAColorOption ? teamAColorOption.style.backgroundColor : matchState.teamA.color;
+    const teamBColor = teamBColorOption ? teamBColorOption.style.backgroundColor : matchState.teamB.color;
+    
+    matchState.teamA.name = teamAName;
+    matchState.teamA.color = teamAColor;
+    matchState.teamB.name = teamBName;
+    matchState.teamB.color = teamBColor;
+    
+    // อัพเดทชื่อทีมในส่วนหัวข้อด้านบน
+    const teamAHeaderBox = document.getElementById('teamAHeaderBox');
+    const teamBHeaderBox = document.getElementById('teamBHeaderBox');
+    
+    if (teamAHeaderBox) {
+        teamAHeaderBox.textContent = teamAName;
+        teamAHeaderBox.style.backgroundColor = teamAColor;
     }
+    
+    if (teamBHeaderBox) {
+        teamBHeaderBox.textContent = teamBName;
+        teamBHeaderBox.style.backgroundColor = teamBColor;
+    }
+    
+    updateUI();
+    saveMatchData();
+    teamSettingsModal.style.display = 'none';
+}
 
     function showCardDialog(isTeamA, isYellow, isGoal, cardToEdit = null) {
         if (!matchState.isMatchStarted && !matchState.isHalfTime && !cardToEdit) {
