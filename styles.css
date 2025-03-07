@@ -90,14 +90,45 @@ header {
     transform: rotate(30deg);
 }
 
+/* เพิ่ม styles สำหรับชื่อทีม */
+.team-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    max-width: 150px;
+}
+
+.team-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    margin-bottom: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 3px 8px;
+    border-radius: 5px;
+    max-width: 100%;
+    word-wrap: break-word;
+    height: auto;
+    min-height: 20px;
+    max-height: 40px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.2;
+}
+
 .timer-container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 10px;
-    padding: 0 20px;
+    padding: 0 5px;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 5px;
 }
 
 .match-time {
@@ -122,35 +153,49 @@ header {
     box-shadow: 0 3px 6px rgba(0,0,0,0.1);
     min-width: 40px;
     text-align: center;
+    margin: 0 5px;
+}
+
+/* ปรับ order ของ elements */
+.team-name-a {
+    order: 0;
 }
 
 #teamAScore {
     order: 1;
 }
 
+.match-time {
+    order: 2;
+}
+
 #teamBScore {
     order: 3;
 }
 
+.team-name-b {
+    order: 4;
+}
+
 .injury-time {
+    order: 5;
     background-color: #D32F2F;
     color: white;
     font-size: 1.2rem;
     font-weight: bold;
     padding: 6px 12px;
     border-radius: 12px;
-    order: 4;
     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
 .total-injury {
+    order: 6;
     background-color: #FF9800;
     color: white;
     font-size: 1.2rem;
     font-weight: bold;
     padding: 6px 12px;
     border-radius: 12px;
-    order: 5;
     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
@@ -804,4 +849,34 @@ header {
 .sub-window {
     display: flex;
     flex-direction: column;
+}
+
+/* Media query สำหรับอุปกรณ์มือถือ */
+@media (max-width: 600px) {
+    .timer-container {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    
+    .team-info {
+        max-width: 120px;
+    }
+    
+    .match-time {
+        font-size: 1.3rem;
+        padding: 6px 12px;
+    }
+    
+    .team-score {
+        font-size: 1.3rem;
+    }
+    
+    .team-name {
+        font-size: 0.8rem;
+    }
+    
+    .injury-time, .total-injury {
+        font-size: 1rem;
+        padding: 4px 10px;
+    }
 }
