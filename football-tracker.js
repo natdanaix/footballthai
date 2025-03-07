@@ -559,7 +559,7 @@ function createSecondHalfConfirmModal() {
         localStorage.removeItem('matchData');
     }
 
- function updateUI() {
+function updateUI() {
     // อัพเดทชื่อทีมในส่วนหัวข้อด้านบน
     const teamAHeaderBox = document.getElementById('teamAHeaderBox');
     const teamBHeaderBox = document.getElementById('teamBHeaderBox');
