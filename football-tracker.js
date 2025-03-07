@@ -194,8 +194,14 @@ function init() {
     createHalfTimeSubButtons();
     // คอมเมนต์บรรทัดนี้ออกถ้าไม่ต้องการสร้าง halfTimeModal
     // createHalfTimeModal(); 
-    createSecondHalfConfirmModal(); // เพิ่มการสร้าง modal ยืนยันเริ่มครึ่งหลัง
+    createSecondHalfConfirmModal(); // สร้าง modal ยืนยันเริ่มครึ่งหลัง
     loadSavedMatchData();
+    
+    // ตรวจสอบว่ามีตัวแปร teamAHeader และ teamBHeader หรือไม่
+    // เนื่องจากเราอาจจะเอาส่วนนี้ออกจาก HTML แล้ว
+    teamAHeader = document.getElementById('teamAHeader');
+    teamBHeader = document.getElementById('teamBHeader');
+    
     setupEventListeners();
     initColorPickers();
     autoSaveTimer = setInterval(saveMatchData, 10000);
@@ -445,32 +451,52 @@ function createSecondHalfConfirmModal() {
     document.getElementById('secondHalfConfirmModal').style.display = 'flex';
 }
     // Initialize color pickers
-    function initColorPickers() {
-        teamAColorPicker.innerHTML = '';
-        teamBColorPicker.innerHTML = '';
-        
-        availableColors.forEach(color => {
-            const optionA = document.createElement('div');
-            optionA.className = 'color-option';
-            optionA.style.backgroundColor = color;
-            if (color === matchState.teamA.color) optionA.classList.add('selected');
-            optionA.addEventListener('click', () => {
-                document.querySelectorAll('#teamAColorPicker .color-option').forEach(opt => opt.classList.remove('selected'));
-                optionA.classList.add('selected');
-            });
-            teamAColorPicker.appendChild(optionA);
-            
-            const optionB = document.createElement('div');
-            optionB.className = 'color-option';
-            optionB.style.backgroundColor = color;
-            if (color === matchState.teamB.color) optionB.classList.add('selected');
-            optionB.addEventListener('click', () => {
-                document.querySelectorAll('#teamBColorPicker .color-option').forEach(opt => opt.classList.remove('selected'));
-                optionB.classList.add('selected');
-            });
-            teamBColorPicker.appendChild(optionB);
+   function initColorPickers() {
+    teamAColorPicker.innerHTML = '';
+    teamBColorPicker.innerHTML = '';
+    
+    // สีที่มีให้เลือก รวมถึงสีดำและสีขาว
+    const availableColors = [
+        '#1976D2', // น้ำเงิน
+        '#D32F2F', // แดง
+        '#4CAF50', // เขียว
+        '#FF9800', // ส้ม
+        '#9C27B0', // ม่วง
+        '#009688', // เขียวมิ้นท์
+        '#3F51B5', // น้ำเงิน indigo
+        '#E91E63', // ชมพู
+        '#FFC107', // เหลือง amber
+        '#00BCD4', // ฟ้า cyan
+        '#FF5722', // ส้มแดง deep orange
+        '#673AB7', // ม่วง deep purple
+        '#03A9F4', // ฟ้า light blue
+        '#8BC34A', // เขียวอ่อน light green
+        '#000000', // ดำ (เพิ่มใหม่)
+        '#FFFFFF'  // ขาว (เพิ่มใหม่)
+    ];
+    
+    availableColors.forEach(color => {
+        const optionA = document.createElement('div');
+        optionA.className = 'color-option';
+        optionA.style.backgroundColor = color;
+        if (color === matchState.teamA.color) optionA.classList.add('selected');
+        optionA.addEventListener('click', () => {
+            document.querySelectorAll('#teamAColorPicker .color-option').forEach(opt => opt.classList.remove('selected'));
+            optionA.classList.add('selected');
         });
-    }
+        teamAColorPicker.appendChild(optionA);
+        
+        const optionB = document.createElement('div');
+        optionB.className = 'color-option';
+        optionB.style.backgroundColor = color;
+        if (color === matchState.teamB.color) optionB.classList.add('selected');
+        optionB.addEventListener('click', () => {
+            document.querySelectorAll('#teamBColorPicker .color-option').forEach(opt => opt.classList.remove('selected'));
+            optionB.classList.add('selected');
+        });
+        teamBColorPicker.appendChild(optionB);
+    });
+}
 
     // Load saved match data
     function loadSavedMatchData() {
