@@ -102,63 +102,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveTeamSettingsBtn = document.getElementById('saveTeamSettingsBtn');
     const cancelTeamSettingsBtn = document.getElementById('cancelTeamSettingsBtn');
 
-    // Card Modal (reused for goals)
-    const cardModal = document.getElementById('cardModal');
-    const cardModalTitle = document.getElementById('cardModalTitle');
-    const playerNumberInput = document.getElementById('playerNumberInput');
-    const saveCardBtn = document.getElementById('saveCardBtn');
-    const cancelCardBtn = document.getElementById('cancelCardBtn');
-    const closeCardModalBtn = document.getElementById('closeCardModalBtn');
-    const cardModalActions = document.getElementById('cardModalActions');
-
-    // Substitution Modal
-    const subModal = document.getElementById('subModal');
-    const subModalTitle = document.getElementById('subModalTitle');
-    const playerInInput = document.getElementById('playerInInput');
-    const playerOutInput = document.getElementById('playerOutInput');
-    const saveSubBtn = document.getElementById('saveSubBtn');
-    const cancelSubBtn = document.getElementById('cancelSubBtn');
-    const closeSubModalBtn = document.getElementById('closeSubModalBtn');
-    const subModalActions = document.getElementById('subModalActions');
-
-    // Half-time Modal
-    let halfTimeModal;
-
-    // Add Another Player Substitution section
-    const addAnotherSubSection = document.createElement('div');
-    addAnotherSubSection.innerHTML = `
-        <div class="input-group" id="additionalSubsContainer">
-            <!-- Additional player substitutions will be added here -->
-        </div>
-        <button class="modal-btn add-btn" id="addAnotherSubBtn">
-            <i class="fas fa-plus"></i> Add Another Substitution
-        </button>
-    `;
-
-    // Injury Summary Modal
-    const injurySummaryModal = document.getElementById('injurySummaryModal');
-    const injurySummaryContent = document.getElementById('injurySummaryContent');
-    const closeInjurySummaryBtn = document.getElementById('closeInjurySummaryBtn');
-    const closeInjurySummaryConfirmBtn = document.getElementById('closeInjurySummaryConfirmBtn');
-
-    // Reset Confirmation Modal
-    const resetConfirmModal = document.getElementById('resetConfirmModal');
-    const closeResetConfirmBtn = document.getElementById('closeResetConfirmBtn');
-    const cancelResetBtn = document.getElementById('cancelResetBtn');
-    const confirmResetBtn = document.getElementById('confirmResetBtn');
-
-    // Match Summary Modal
-    const matchSummaryModal = document.getElementById('matchSummaryModal');
-    const matchSummaryContent = document.getElementById('matchSummaryContent');
-    const closeMatchSummaryBtn = document.getElementById('closeMatchSummaryBtn');
-    const closeMatchSummaryConfirmBtn = document.getElementById('closeMatchSummaryConfirmBtn');
-    const saveAsPdfBtn = document.getElementById('saveAsPdfBtn');
-
-    // Available team colors
+    // Available team colors - Added Black and White
     const availableColors = [
         '#1976D2', '#D32F2F', '#4CAF50', '#FF9800', '#9C27B0',
         '#009688', '#3F51B5', '#E91E63', '#FFC107', '#00BCD4',
-        '#FF5722', '#673AB7', '#03A9F4', '#8BC34A'
+        '#FF5722', '#673AB7', '#03A9F4', '#8BC34A',
+        '#000000', '#FFFFFF' // Added Black and White colors
     ];
 
     // Variables to track current modal context
@@ -178,19 +127,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize the page
 function init() {
-    createHalfTimeSubButtons();
-    // คอมเมนต์บรรทัดนี้ออกถ้าไม่ต้องการสร้าง halfTimeModal
-    // createHalfTimeModal(); 
-    createSecondHalfConfirmModal(); // เพิ่มการสร้าง modal ยืนยันเริ่มครึ่งหลัง
-    loadSavedMatchData();
-    setupEventListeners();
-    initColorPickers();
-    autoSaveTimer = setInterval(saveMatchData, 10000);
-    if (!matchState.isMatchStarted) {
-        setTimeout(showTeamCustomizationDialog, 500);
+        createHalfTimeSubButtons();
+        createSecondHalfConfirmModal();
+        loadSavedMatchData();
+        setupEventListeners();
+        initColorPickers();
+        autoSaveTimer = setInterval(saveMatchData, 10000);
+        if (!matchState.isMatchStarted) {
+            setTimeout(showTeamCustomizationDialog, 500);
+        }
+        updateSubstitutionButtonsState();
     }
-    updateSubstitutionButtonsState();
-}
     
 function createSecondHalfConfirmModal() {
     // ตรวจสอบว่ามี modal อยู่แล้วหรือไม่
@@ -440,6 +387,12 @@ function createSecondHalfConfirmModal() {
             const optionA = document.createElement('div');
             optionA.className = 'color-option';
             optionA.style.backgroundColor = color;
+            
+            // Add border for white color to make it visible
+            if (color === '#FFFFFF') {
+                optionA.style.border = '1px solid #CCCCCC';
+            }
+            
             if (color === matchState.teamA.color) optionA.classList.add('selected');
             optionA.addEventListener('click', () => {
                 document.querySelectorAll('#teamAColorPicker .color-option').forEach(opt => opt.classList.remove('selected'));
@@ -450,6 +403,12 @@ function createSecondHalfConfirmModal() {
             const optionB = document.createElement('div');
             optionB.className = 'color-option';
             optionB.style.backgroundColor = color;
+            
+            // Add border for white color to make it visible
+            if (color === '#FFFFFF') {
+                optionB.style.border = '1px solid #CCCCCC';
+            }
+            
             if (color === matchState.teamB.color) optionB.classList.add('selected');
             optionB.addEventListener('click', () => {
                 document.querySelectorAll('#teamBColorPicker .color-option').forEach(opt => opt.classList.remove('selected'));
@@ -520,32 +479,47 @@ function createSecondHalfConfirmModal() {
         localStorage.removeItem('matchData');
     }
 
-   function updateUI() {
+  function updateUI() {
+    // Update team headers with team names and colors
     teamAHeader.textContent = matchState.teamA.name;
     teamAHeader.style.backgroundColor = matchState.teamA.color;
     teamBHeader.textContent = matchState.teamB.name;
     teamBHeader.style.backgroundColor = matchState.teamB.color;
     
-    // อัปเดตคะแนนในส่วนหัว
+    // Set text color based on background color contrast
+    const teamATextColor = isColorDark(matchState.teamA.color) ? 'white' : 'black';
+    const teamBTextColor = isColorDark(matchState.teamB.color) ? 'white' : 'black';
+    
+    teamAHeader.style.color = teamATextColor;
+    teamBHeader.style.color = teamBTextColor;
+    
+    // Update scores in header
     const teamAScoreEl = document.getElementById('teamAScore');
     const teamBScoreEl = document.getElementById('teamBScore');
     teamAScoreEl.textContent = matchState.teamA.goals;
     teamBScoreEl.textContent = matchState.teamB.goals;
     
+    // Update substitution buttons with team colors
     teamASubBtn.style.backgroundColor = matchState.teamA.color;
     teamBSubBtn.style.backgroundColor = matchState.teamB.color;
     teamAHalfSubBtn.style.backgroundColor = matchState.teamA.color;
     teamBHalfSubBtn.style.backgroundColor = matchState.teamB.color;
     
-    // ปรับการแสดงปุ่ม Half-time Sub ให้แสดงเฉพาะช่วงพักครึ่งเท่านั้น
+    // Set text color for buttons based on background color contrast
+    teamASubBtn.style.color = teamATextColor;
+    teamBSubBtn.style.color = teamBTextColor;
+    teamAHalfSubBtn.style.color = teamATextColor;
+    teamBHalfSubBtn.style.color = teamBTextColor;
+    
+    // Show or hide half-time substitution buttons based on match state
     if (matchState.isHalfTime) {
-        // ช่วงพักครึ่ง: แสดงปุ่ม Half-time Sub, ซ่อนปุ่ม Substitution
+        // Half-time: Show half-time sub buttons, hide regular sub buttons
         teamAHalfSubBtn.style.display = 'block';
         teamBHalfSubBtn.style.display = 'block';
         teamASubBtn.style.display = 'none';
         teamBSubBtn.style.display = 'none';
     } else {
-        // ระหว่างการแข่งขัน หรือก่อนเริ่มเกม: ซ่อนปุ่ม Half-time Sub, แสดงปุ่ม Substitution
+        // During match or before game: Hide half-time sub buttons, show regular sub buttons
         teamAHalfSubBtn.style.display = 'none';
         teamBHalfSubBtn.style.display = 'none';
         teamASubBtn.style.display = 'block';
@@ -554,9 +528,10 @@ function createSecondHalfConfirmModal() {
     
     updateSubstitutionButtonsState();
     
-    // แสดงเวลาการแข่งขัน
+    // Display match time
     matchTimeEl.textContent = matchState.elapsedTime;
     
+    // Update injury time display
     if (matchState.isInjuryTimeActive) {
         injuryTimeEl.textContent = matchState.currentInjuryTimeDisplay;
         injuryTimeEl.style.display = 'block';
@@ -582,42 +557,68 @@ function createSecondHalfConfirmModal() {
         injuryFab.innerHTML = '<i class="fas fa-stopwatch"></i>';
     }
     
-    // แสดง/ซ่อน ปุ่มควบคุมตามสถานะของการแข่งขัน
+    // Show/hide control buttons based on match state
     if (matchState.isMatchStarted && !matchState.isHalfTime) {
-        // เมื่อแข่งขันกำลังดำเนินอยู่
+        // When match is in progress
         matchControlsEl.style.display = 'none';
         
-        // ซ่อนปุ่ม Injury Time เมื่ออยู่ในช่วงนับถอยหลังเวลาบาดเจ็บ
+        // Hide Injury Time button during injury time countdown
         if (matchState.isAddingInjuryTime) {
             injuryControlsEl.style.display = 'flex';
             injuryFab.style.display = 'none';
-            injuryBtn.style.display = 'none'; // ซ่อนปุ่ม Injury Time
+            injuryBtn.style.display = 'none'; // Hide Injury Time button
         } else {
             injuryControlsEl.style.display = 'flex';
             injuryFab.style.display = 'flex';
-            injuryBtn.style.display = 'block'; // แสดงปุ่ม Injury Time
+            injuryBtn.style.display = 'block'; // Show Injury Time button
         }
         
-        // อัปเดตข้อความปุ่มสำหรับครึ่งหลัง
+        // Update button text for second half
         if (!matchState.isFirstHalf) {
             startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Second Half';
         }
     } else if (matchState.isHalfTime) {
-        // ในช่วงพักครึ่ง
+        // During half-time
         matchControlsEl.style.display = 'flex';
         injuryControlsEl.style.display = 'none';
         injuryFab.style.display = 'none';
         startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Second Half';
     } else {
-        // ก่อนเริ่มการแข่งขัน หรือจบการแข่งขันแล้ว
+        // Before match start or after match end
         matchControlsEl.style.display = 'flex';
         injuryControlsEl.style.display = 'none';
         injuryFab.style.display = 'none';
         startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Match';
     }
     
+    // Update the display of team cards and substitutions
     renderTeamCards();
     renderTeamSubstitutions();
+}
+
+// Helper function to determine if a color is dark or light
+function isColorDark(color) {
+    // Handle color in 'rgb(r, g, b)' format
+    if (color.startsWith('rgb')) {
+        const rgbValues = color.match(/\d+/g);
+        if (rgbValues && rgbValues.length >= 3) {
+            const r = parseInt(rgbValues[0]);
+            const g = parseInt(rgbValues[1]);
+            const b = parseInt(rgbValues[2]);
+            return (r * 0.299 + g * 0.587 + b * 0.114) < 128;
+        }
+    }
+    
+    // Handle color in hex format (#RRGGBB)
+    if (color.startsWith('#')) {
+        const r = parseInt(color.slice(1, 3), 16);
+        const g = parseInt(color.slice(3, 5), 16);
+        const b = parseInt(color.slice(5, 7), 16);
+        return (r * 0.299 + g * 0.587 + b * 0.114) < 128;
+    }
+    
+    // Default to assuming it's a light color
+    return false;
 }
 
     function updateSubstitutionButtonsState() {
@@ -1105,7 +1106,7 @@ function createSecondHalfConfirmModal() {
         teamSettingsModal.style.display = 'flex';
     }
 
-    function saveTeamSettings() {
+   function saveTeamSettings() {
         const teamAName = teamANameInput.value.trim() || 'Team A';
         const teamBName = teamBNameInput.value.trim() || 'Team B';
         const teamAColorOption = document.querySelector('#teamAColorPicker .color-option.selected');
@@ -1118,11 +1119,45 @@ function createSecondHalfConfirmModal() {
         matchState.teamB.name = teamBName;
         matchState.teamB.color = teamBColor;
         
+        // Set text color based on background color contrast for better readability
+        const teamATextColor = isColorDark(teamAColor) ? 'white' : 'black';
+        const teamBTextColor = isColorDark(teamBColor) ? 'white' : 'black';
+        
+        updateTeamHeaderTextColor(teamAHeader, teamATextColor);
+        updateTeamHeaderTextColor(teamBHeader, teamBTextColor);
+        
         updateUI();
         saveMatchData();
         teamSettingsModal.style.display = 'none';
     }
-
+    function updateTeamHeaderTextColor(headerElement, textColor) {
+        if (headerElement) {
+            headerElement.style.color = textColor;
+        }
+    }
+ function isColorDark(color) {
+        // Handle color in 'rgb(r, g, b)' format
+        if (color.startsWith('rgb')) {
+            const rgbValues = color.match(/\d+/g);
+            if (rgbValues && rgbValues.length >= 3) {
+                const r = parseInt(rgbValues[0]);
+                const g = parseInt(rgbValues[1]);
+                const b = parseInt(rgbValues[2]);
+                return (r * 0.299 + g * 0.587 + b * 0.114) < 128;
+            }
+        }
+        
+        // Handle color in hex format (#RRGGBB)
+        if (color.startsWith('#')) {
+            const r = parseInt(color.slice(1, 3), 16);
+            const g = parseInt(color.slice(3, 5), 16);
+            const b = parseInt(color.slice(5, 7), 16);
+            return (r * 0.299 + g * 0.587 + b * 0.114) < 128;
+        }
+        
+        // Default to assuming it's a light color
+        return false;
+    }
     function showCardDialog(isTeamA, isYellow, isGoal, cardToEdit = null) {
         if (!matchState.isMatchStarted && !matchState.isHalfTime && !cardToEdit) {
             alert('Please start the match first');
