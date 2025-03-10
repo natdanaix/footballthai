@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const teamAHeader = document.getElementById('teamAHeader');
     const teamBHeader = document.getElementById('teamBHeader');
     const endMatchBtn = document.getElementById('endMatchBtn');
-    const infoBtn = document.getElementById('infoBtn'); // New info button
+    const infoBtn = document.getElementById('infoBtn');
 
     // Team A buttons
     const teamAYellowBtn = document.getElementById('teamAYellowBtn');
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeMatchSummaryConfirmBtn = document.getElementById('closeMatchSummaryConfirmBtn');
     const saveAsPdfBtn = document.getElementById('saveAsPdfBtn');
 
-    // Current Details Modal (New)
+    // Current Details Modal
     const currentDetailsModal = document.getElementById('currentDetailsModal');
     const currentDetailsContent = document.getElementById('currentDetailsContent');
     const closeCurrentDetailsBtn = document.getElementById('closeCurrentDetailsBtn');
@@ -190,9 +190,11 @@ document.addEventListener('DOMContentLoaded', function() {
         setupEventListeners();
         initColorPickers();
         autoSaveTimer = setInterval(saveMatchData, 10000);
-        if (!matchState.isMatchStarted) {
-            setTimeout(showTeamCustomizationDialog, 500);
-        }
+
+        // บังคับให้แสดงป๊อปอัพเลือกทีมทุกครั้งเมื่อเริ่มแอปใหม่
+        console.log('Initializing app - Showing team customization dialog');
+        setTimeout(showTeamCustomizationDialog, 500);
+
         updateSubstitutionButtonsState();
     }
 
@@ -270,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
         injuryFab.addEventListener('click', toggleInjuryTime);
         endMatchBtn.addEventListener('click', endMatch);
         resetDataBtn.addEventListener('click', resetAllData);
-        infoBtn.addEventListener('click', showCurrentDetails); // New event listener
+        infoBtn.addEventListener('click', showCurrentDetails);
         
         teamAYellowBtn.addEventListener('click', () => showCardDialog(true, true, false));
         teamARedBtn.addEventListener('click', () => showCardDialog(true, false, false));
@@ -354,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         saveAsPdfBtn.addEventListener('click', saveSummaryAsPdf);
         
-        closeCurrentDetailsBtn.addEventListener('click', () => { // New event listener
+        closeCurrentDetailsBtn.addEventListener('click', () => {
             currentDetailsModal.style.display = 'none';
         });
     }
@@ -441,6 +443,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         return windows.size;
     }
+
+    // ... (ต่อไปใน Part 2)
+});
+
 
     function saveMatchData() {
         localStorage.setItem('matchData', JSON.stringify({
@@ -1673,95 +1679,111 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        doc.save(`Match_Summary_${new Date().toISOString().slice(0,10)}.pdf`);
+        doc.save('match_summary.pdf');
     }
 
-   function showCurrentDetails() {
-    const teamA = matchState.teamA;
-    const teamB = matchState.teamB;
-    const teamAYellowCards = teamA.cards.filter(card => card.isYellow).length;
-    const teamARedCards = teamA.cards.filter(card => !card.isYellow && !card.isGoal).length;
-    const teamAGoals = teamA.goals;
-    const teamBYellowCards = teamB.cards.filter(card => card.isYellow).length;
-    const teamBRedCards = teamB.cards.filter(card => !card.isYellow && !card.isGoal).length;
-    const teamBGoals = teamB.goals;
+    function showCurrentDetails() {
+        const teamA = matchState.teamA;
+        const teamB = matchState.teamB;
+        const teamAYellowCards = teamA.cards.filter(card => card.isYellow).length;
+        const teamARedCards = teamA.cards.filter(card => !card.isYellow && !card.isGoal).length;
+        const teamAGoals = teamA.goals;
+        const teamBYellowCards = teamB.cards.filter(card => card.isYellow).length;
+        const teamBRedCards = teamB.cards.filter(card => !card.isYellow && !card.isGoal).length;
+        const teamBGoals = teamB.goals;
 
-    // Include both regular and half-time substitutions
-    const teamAAllSubs = [...teamA.substitutions, ...teamA.halfTimeSubstitutions.map(sub => ({...sub, isHalfTime: true}))];
-    const teamBAllSubs = [...teamB.substitutions, ...teamB.halfTimeSubstitutions.map(sub => ({...sub, isHalfTime: true}))];
-    
-    const teamASubWindows = groupSubstitutionsByWindow(teamAAllSubs);
-    const teamBSubWindows = groupSubstitutionsByWindow(teamBAllSubs);
-    
-    const totalMatchTime = matchState.elapsedTime;
-    const totalInjuryTime = getTotalInjuryTimeDisplay();
-    
-    const teamAPlayerSubCount = getPlayerSubCount(true);
-    const teamBPlayerSubCount = getPlayerSubCount(false);
+        const teamAAllSubs = [...teamA.substitutions, ...teamA.halfTimeSubstitutions.map(sub => ({...sub, isHalfTime: true}))];
+        const teamBAllSubs = [...teamB.substitutions, ...teamB.halfTimeSubstitutions.map(sub => ({...sub, isHalfTime: true}))];
+        
+        const teamASubWindows = groupSubstitutionsByWindow(teamAAllSubs);
+        const teamBSubWindows = groupSubstitutionsByWindow(teamBAllSubs);
+        
+        const totalMatchTime = matchState.elapsedTime;
+        const totalInjuryTime = getTotalInjuryTimeDisplay();
+        
+        const teamAPlayerSubCount = getPlayerSubCount(true);
+        const teamBPlayerSubCount = getPlayerSubCount(false);
 
-    let detailsHTML = `
-        <div style="margin-bottom: 16px;">
-            <h3>Current Match Status</h3>
-            <p>Match Time: ${totalMatchTime}</p>
-            <p>Total Injury Time: ${totalInjuryTime}</p>
-            <p>Half: ${matchState.isFirstHalf ? 'First Half' : (matchState.isHalfTime ? 'Half-time' : 'Second Half')}</p>
-            <p>Match Started: ${matchState.isMatchStarted ? 'Yes' : 'No'}</p>
-            ${matchState.isInjuryTimeActive ? `<p>Current Injury Time Running: ${matchState.currentInjuryTimeDisplay}</p>` : ''}
-        </div>
-        <div style="margin-bottom: 16px;">
-            <h3>${teamA.name}</h3>
-            <p>Goals: ${teamAGoals}</p>
-            <p>Yellow Cards: ${teamAYellowCards}</p>
-            <p>Red Cards: ${teamARedCards}</p>
-            <p>Substitution Windows: ${teamA.subWindows}/3 (${teamAPlayerSubCount}/5 Players)</p>
-            ${teamA.cards.length > 0 ? `
-                <div style="margin-top: 8px;">
-                    <p>Event Details:</p>
-                    ${teamA.cards.map(card => `
-                        <p style="margin-left: 16px;">- ${card.isGoal ? 'Goal' : (card.isYellow ? 'Yellow Card' : 'Red Card')} #${card.playerNumber} (${card.timeStamp})</p>
-                    `).join('')}
-                </div>
-            ` : '<p>No events yet</p>'}
-            ${teamASubWindows.length > 0 ? `
-                <div style="margin-top: 8px;">
-                    <p>Substitution Details:</p>
-                    ${teamASubWindows.map((window, index) => `
-                        <p style="margin-left: 16px;">- ${window.isHalfTime ? 'Half-time Substitution' : `Window ${index + 1}`} (${window.timeStamp}):</p>
-                        ${window.substitutions.map(sub => `
-                            <p style="margin-left: 32px;">#${sub.playerInNumber} In, #${sub.playerOutNumber} Out</p>
+        let detailsHTML = `
+            <div style="margin-bottom: 16px;">
+                <h3>Current Match Status</h3>
+                <p>Match Time: ${totalMatchTime}</p>
+                <p>Total Injury Time: ${totalInjuryTime}</p>
+                <p>Half: ${matchState.isFirstHalf ? 'First Half' : (matchState.isHalfTime ? 'Half-time' : 'Second Half')}</p>
+                <p>Match Started: ${matchState.isMatchStarted ? 'Yes' : 'No'}</p>
+                ${matchState.isInjuryTimeActive ? `<p>Current Injury Time Running: ${matchState.currentInjuryTimeDisplay}</p>` : ''}
+            </div>
+            <div style="margin-bottom: 16px;">
+                <h3>${teamA.name}</h3>
+                <p>Goals: ${teamAGoals}</p>
+                <p>Yellow Cards: ${teamAYellowCards}</p>
+                <p>Red Cards: ${teamARedCards}</p>
+                <p>Substitution Windows: ${teamA.subWindows}/3 (${teamAPlayerSubCount}/5 Players)</p>
+                ${teamA.cards.length > 0 ? `
+                    <div style="margin-top: 8px;">
+                        <p>Event Details:</p>
+                        ${teamA.cards.map(card => `
+                            <p style="margin-left: 16px;">- ${card.isGoal ? 'Goal' : (card.isYellow ? 'Yellow Card' : 'Red Card')} #${card.playerNumber} (${card.timeStamp})</p>
                         `).join('')}
-                    `).join('')}
-                </div>
-            ` : '<p>No substitutions yet</p>'}
-        </div>
-        <div>
-            <h3>${teamB.name}</h3>
-            <p>Goals: ${teamBGoals}</p>
-            <p>Yellow Cards: ${teamBYellowCards}</p>
-            <p>Red Cards: ${teamBRedCards}</p>
-            <p>Substitution Windows: ${teamB.subWindows}/3 (${teamBPlayerSubCount}/5 Players)</p>
-            ${teamB.cards.length > 0 ? `
-                <div style="margin-top: 8px;">
-                    <p>Event Details:</p>
-                    ${teamB.cards.map(card => `
-                        <p style="margin-left: 16px;">- ${card.isGoal ? 'Goal' : (card.isYellow ? 'Yellow Card' : 'Red Card')} #${card.playerNumber} (${card.timeStamp})</p>
-                    `).join('')}
-                </div>
-            ` : '<p>No events yet</p>'}
-            ${teamBSubWindows.length > 0 ? `
-                <div style="margin-top: 8px;">
-                    <p>Substitution Details:</p>
-                    ${teamBSubWindows.map((window, index) => `
-                        <p style="margin-left: 16px;">- ${window.isHalfTime ? 'Half-time Substitution' : `Window ${index + 1}`} (${window.timeStamp}):</p>
-                        ${window.substitutions.map(sub => `
-                            <p style="margin-left: 32px;">#${sub.playerInNumber} In, #${sub.playerOutNumber} Out</p>
+                    </div>
+                ` : '<p>No events yet</p>'}
+                ${teamASubWindows.length > 0 ? `
+                    <div style="margin-top: 8px;">
+                        <p>Substitution Details:</p>
+                        ${teamASubWindows.map((window, index) => `
+                            <p style="margin-left: 16px;">- ${window.isHalfTime ? 'Half-time Substitution' : `Window ${index + 1}`} (${window.timeStamp}):</p>
+                            ${window.substitutions.map(sub => `
+                                <p style="margin-left: 32px;">#${sub.playerInNumber} In, #${sub.playerOutNumber} Out</p>
+                            `).join('')}
                         `).join('')}
-                    `).join('')}
-                </div>
-            ` : '<p>No substitutions yet</p>'}
-        </div>
-    `;
+                    </div>
+                ` : '<p>No substitutions yet</p>'}
+            </div>
+            <div>
+                <h3>${teamB.name}</h3>
+                <p>Goals: ${teamBGoals}</p>
+                <p>Yellow Cards: ${teamBYellowCards}</p>
+                <p>Red Cards: ${teamBRedCards}</p>
+                <p>Substitution Windows: ${teamB.subWindows}/3 (${teamBPlayerSubCount}/5 Players)</p>
+                ${teamB.cards.length > 0 ? `
+                    <div style="margin-top: 8px;">
+                        <p>Event Details:</p>
+                        ${teamB.cards.map(card => `
+                            <p style="margin-left: 16px;">- ${card.isGoal ? 'Goal' : (card.isYellow ? 'Yellow Card' : 'Red Card')} #${card.playerNumber} (${card.timeStamp})</p>
+                        `).join('')}
+                    </div>
+                ` : '<p>No events yet</p>'}
+                ${teamBSubWindows.length > 0 ? `
+                    <div style="margin-top: 8px;">
+                        <p>Substitution Details:</p>
+                        ${teamBSubWindows.map((window, index) => `
+                            <p style="margin-left: 16px;">- ${window.isHalfTime ? 'Half-time Substitution' : `Window ${index + 1}`} (${window.timeStamp}):</p>
+                            ${window.substitutions.map(sub => `
+                                <p style="margin-left: 32px;">#${sub.playerInNumber} In, #${sub.playerOutNumber} Out</p>
+                            `).join('')}
+                        `).join('')}
+                    </div>
+                ` : '<p>No substitutions yet</p>'}
+            </div>
+        `;
 
-    currentDetailsContent.innerHTML = detailsHTML;
-    currentDetailsModal.style.display = 'flex';
-}
+        currentDetailsContent.innerHTML = detailsHTML;
+        currentDetailsModal.style.display = 'flex';
+    }
+
+    // Edit functions exposed to global scope for onclick handlers
+    window.editCard = function(cardId, isTeamA) {
+        const team = isTeamA ? matchState.teamA : matchState.teamB;
+        const card = team.cards.find(c => c.id === cardId);
+        if (card) {
+            showCardDialog(isTeamA, card.isYellow, card.isGoal, card);
+        }
+    };
+
+    window.editSubstitutionWindow = function(windowId, isTeamA, isHalfTime) {
+        showSubstitutionDialog(isTeamA, isHalfTime, windowId);
+    };
+
+    // Initialize the application
+    init();
+});
