@@ -520,41 +520,52 @@ function createSecondHalfConfirmModal() {
         localStorage.removeItem('matchData');
     }
 
-   function updateUI() {
+  function updateUI() {
+    // อัปเดตชื่อและสีของทีม A
     teamAHeader.textContent = matchState.teamA.name;
     teamAHeader.style.backgroundColor = matchState.teamA.color;
+    // ถ้าสีทีม A เป็นสีขาว (#FFFFFF) ให้เปลี่ยนข้อความเป็นสีดำ
+    teamAHeader.style.color = matchState.teamA.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
+
+    // อัปเดตชื่อและสีของทีม B
     teamBHeader.textContent = matchState.teamB.name;
     teamBHeader.style.backgroundColor = matchState.teamB.color;
-    
+    // ถ้าสีทีม B เป็นสีขาว (#FFFFFF) ให้เปลี่ยนข้อความเป็นสีดำ
+    teamBHeader.style.color = matchState.teamB.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
+
     // อัปเดตคะแนนในส่วนหัว
     const teamAScoreEl = document.getElementById('teamAScore');
     const teamBScoreEl = document.getElementById('teamBScore');
     teamAScoreEl.textContent = matchState.teamA.goals;
     teamBScoreEl.textContent = matchState.teamB.goals;
-    
+
+    // อัปเดตสีของปุ่มเปลี่ยนตัวทีม A
     teamASubBtn.style.backgroundColor = matchState.teamA.color;
-    teamBSubBtn.style.backgroundColor = matchState.teamB.color;
+    teamASubBtn.style.color = matchState.teamA.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
     teamAHalfSubBtn.style.backgroundColor = matchState.teamA.color;
+    teamAHalfSubBtn.style.color = matchState.teamA.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
+
+    // อัปเดตสีของปุ่มเปลี่ยนตัวทีม B
+    teamBSubBtn.style.backgroundColor = matchState.teamB.color;
+    teamBSubBtn.style.color = matchState.teamB.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
     teamBHalfSubBtn.style.backgroundColor = matchState.teamB.color;
-    
+    teamBHalfSubBtn.style.color = matchState.teamB.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
+
+    // ส่วนที่เหลือของฟังก์ชัน updateUI คงเดิม
     // ปรับการแสดงปุ่ม Half-time Sub ให้แสดงเฉพาะช่วงพักครึ่งเท่านั้น
     if (matchState.isHalfTime) {
-        // ช่วงพักครึ่ง: แสดงปุ่ม Half-time Sub, ซ่อนปุ่ม Substitution
         teamAHalfSubBtn.style.display = 'block';
         teamBHalfSubBtn.style.display = 'block';
         teamASubBtn.style.display = 'none';
         teamBSubBtn.style.display = 'none';
     } else {
-        // ระหว่างการแข่งขัน หรือก่อนเริ่มเกม: ซ่อนปุ่ม Half-time Sub, แสดงปุ่ม Substitution
         teamAHalfSubBtn.style.display = 'none';
         teamBHalfSubBtn.style.display = 'none';
         teamASubBtn.style.display = 'block';
         teamBSubBtn.style.display = 'block';
     }
-    
+
     updateSubstitutionButtonsState();
-    
-    // แสดงเวลาการแข่งขัน
     matchTimeEl.textContent = matchState.elapsedTime;
     
     if (matchState.isInjuryTimeActive) {
