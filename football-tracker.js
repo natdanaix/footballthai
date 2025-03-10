@@ -155,11 +155,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveAsPdfBtn = document.getElementById('saveAsPdfBtn');
 
     // Available team colors
-    const availableColors = [
-        '#1976D2', '#D32F2F', '#4CAF50', '#FF9800', '#9C27B0',
-        '#009688', '#3F51B5', '#E91E63', '#FFC107', '#00BCD4',
-        '#FF5722', '#673AB7', '#03A9F4', '#8BC34A'
-    ];
+  // Available team colors
+const availableColors = [
+    '#1976D2', '#D32F2F', '#4CAF50', '#FF9800', '#9C27B0',
+    '#009688', '#3F51B5', '#E91E63', '#FFC107', '#00BCD4',
+    '#FF5722', '#673AB7', '#03A9F4', '#8BC34A', '#000000', '#eddddd' // เพิ่มสีดำและสีขาว
+];
 
     // Variables to track current modal context
     let currentCardContext = {
