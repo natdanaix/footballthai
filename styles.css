@@ -1,61 +1,86 @@
-/* General Reset */
+/* Enhanced styles with 3D buttons and compact vertical cards */
+
+:root {
+    --team-a-color: #1976D2;
+    --team-a-dark: #0D47A1;
+    --team-a-light: #E3F2FD;
+    --team-b-color: #D32F2F;
+    --team-b-dark: #B71C1C;
+    --team-b-light: #FFEBEE;
+    --neutral-bg: #F5F5F5;
+    --yellow-card: #FFC107;
+    --yellow-card-dark: #FFA000;
+    --red-card: #D32F2F;
+    --red-card-dark: #B71C1C;
+    --goal-color: #4CAF50;
+    --goal-color-dark: #2E7D32;
+    --text-primary: #212121;
+    --text-secondary: #757575;
+    --text-light: #FFFFFF;
+    --border-color: #E0E0E0;
+    --button-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    --button-pressed-shadow: 0 2px 0 rgba(0,0,0,0.2);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: #121212;
-    color: #e0e0e0;
+    background-color: var(--neutral-bg);
+    color: var(--text-primary);
     font-size: 16px;
     line-height: 1.5;
+    width: 100%;
     overflow-x: hidden;
 }
 
-/* Variables */
-:root {
-    --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
-    --background-dark: #1e1e1e;
-    --card-bg: #252525;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+.container {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-/* Header */
 header {
-    background: linear-gradient(135deg, #1e88e5, #d81b60);
-    padding: 1rem;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://www.mahajak.com/media/codazon/slideshow/cache/1920x807/_/-/_-3.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    padding: 8px; /* Slightly reduced padding */
     text-align: center;
-    box-shadow: var(--shadow);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 100;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    min-height: 110px; /* Slightly reduced height */
 }
 
 .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: bold;
-    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
 .settings-btn {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255,255,255,0.2);
     border: none;
     color: white;
     font-size: 1.2rem;
     cursor: pointer;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -64,249 +89,475 @@ header {
 }
 
 .settings-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
+    background: rgba(255,255,255,0.3);
+    transform: rotate(30deg);
 }
 
-/* Info Button in Header */
-.info-btn {
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+.timer-container {
     display: flex;
-    align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    margin-right: 10px;
+    align-items: center;
+    margin-top: 8px;
+    padding: 0 10px;
+    gap: 15px;
+    width: 100%;
 }
-
-.info-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
-}
-
-/* Main Layout */
-main {
-    max-width: 1200px;
-    margin: 1rem auto;
-    padding: 0 1rem;
+.match-time-container {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    align-items: center;
+    min-width: 100px;
 }
-
-/* Timer Section */
-.timer-section {
-    background: var(--background-dark);
-    padding: 1rem;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: var(--shadow);
-}
-
-.timer-display {
-    font-size: 2rem;
+.match-time {
+    background-color: #0D47A1;
+    color: white;
+    font-size: 1.4rem;
     font-weight: bold;
-    margin-bottom: 1rem;
+    padding: 6px 14px;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    text-align: center;
+}
+.team-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px;
+    flex: 1;
+}
+.team-score {
+    background-color: #FFFFFF;
+    color: var(--text-primary);
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    min-width: 36px;
+    text-align: center;
 }
 
-#injuryTime {
-    display: none;
-    font-size: 1.5rem;
-    color: #ff9800;
-    margin-top: 0.5rem;
+#teamAScore {
+    order: 1;
 }
 
-#totalInjury {
-    display: none;
-    font-size: 1.5rem;
-    color: #ff9800;
-    margin-top: 0.5rem;
+#teamBScore {
+    order: 3;
 }
 
-.match-controls,
-.injury-controls {
+.injury-time, .total-injury {
+    margin-top: 4px;
+}
+
+.total-injury {
+    background-color: #FF9800;
+    color: white;
+    font-size: 1.1rem; /* Smaller font */
+    font-weight: bold;
+    padding: 5px 10px; /* Reduced padding */
+    border-radius: 10px;
+    order: 5;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.match-controls {
     display: flex;
     justify-content: center;
-    gap: 0.5rem;
+    padding: 10px; /* Reduced padding */
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    gap: 12px; /* Reduced gap */
 }
 
-button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+/* 3D Buttons Styling */
+.control-btn {
+    padding: 10px 16px; /* Reduced padding */
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-button:hover:not(:disabled) {
-    opacity: 0.9;
-    transform: scale(1.05);
-}
-
-.action-btn {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 6px; /* Reduced gap */
+    width: 100%;
+    justify-content: center;
+    position: relative;
+    transition: all 0.1s ease;
+    transform: translateY(-2px);
+    box-shadow: var(--button-shadow);
 }
 
-.action-btn i {
-    margin-right: 0.3rem;
+.control-btn:active {
+    transform: translateY(0);
+    box-shadow: var(--button-pressed-shadow);
 }
 
-/* Team Sections */
-.team-section {
-    background: var(--background-dark);
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: var(--shadow);
+.start-btn {
+    background-color: #4CAF50;
+    color: white;
+    border-bottom: 4px solid #2E7D32;
+}
+
+.start-btn:active {
+    border-bottom-width: 2px;
+}
+
+.reset-btn {
+    background-color: #D32F2F;
+    color: white;
+    border-bottom: 4px solid #B71C1C;
+}
+
+.reset-btn:active {
+    border-bottom-width: 2px;
+}
+
+.injury-btn {
+    background-color: #4CAF50;
+    color: white;
+    border-bottom: 4px solid #2E7D32;
+}
+
+.injury-btn:active {
+    border-bottom-width: 2px;
+}
+
+.injury-btn.active {
+    background-color: #D32F2F;
+    border-bottom: 4px solid #B71C1C;
+}
+
+/* Keep the teams side-by-side as in the original design */
+.teams-container {
+    display: flex;
+    flex: 1;
+}
+
+.team-panel {
+    flex: 1;
+    padding: 8px; /* Reduced padding */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-a {
+    background-color: var(--team-a-light);
+}
+
+.team-b {
+    background-color: var(--team-b-light);
 }
 
 .team-header {
-    padding: 0.5rem;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
+    padding: 10px; /* Reduced padding */
     text-align: center;
-    border-radius: 4px 4px 0 0;
+    margin-bottom: 8px; /* Reduced margin */
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+    /* Default white color */
+    color: white;
 }
 
+/* Add a dark background for white or light-colored team headers */
+.team-header:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: -1;
+    transition: background-color 0.3s ease;
+}
+
+/* For very light colored team headers, add a dark overlay */
+.team-header[style*="background-color: rgb(255, 255, 255)"],
+.team-header[style*="background-color: #ffffff"],
+.team-header[style*="background-color: #fff"],
+.team-header[style*="background-color: rgb(237, 221, 221)"],
+.team-header[style*="background-color: #eddddd"] {
+    color: #212121; /* Dark text for light backgrounds */
+    text-shadow: none; /* Remove text shadow for better readability */
+}
+
+.team-a .team-header {
+    background-color: var(--team-a-color);
+}
+
+.team-b .team-header {
+    background-color: var(--team-b-color);
+}
+
+/* Action Buttons With 3D Effect */
 .team-actions {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-    padding: 1rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    margin-bottom: 10px; /* Reduced margin */
+    gap: 8px; /* Reduced gap */
 }
 
-.team-a .yellow-btn {
-    background-color: #ffc107;
-    color: black;
+.action-btn {
+    padding: 8px 0; /* Reduced padding */
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.85rem; /* Smaller font */
+    position: relative;
+    transition: all 0.1s ease;
+    transform: translateY(-2px);
+    box-shadow: var(--button-shadow);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
 }
 
-.team-a .red-btn {
-    background-color: #d32f2f;
+/* Make yellow and red cards fit the top row with increased height */
+.yellow-btn, .red-btn {
+    grid-row: 1;
+    height: 60px; /* Reduced height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Add card icon visual indicator */
+.yellow-btn::before, .red-btn::before {
+    content: "";
+    display: block;
+    width: 22px; /* Smaller icon */
+    height: 32px; /* Smaller icon */
+    margin-bottom: 4px; /* Less spacing */
+    border-radius: 3px;
+}
+
+.yellow-btn::before {
+    background-color: var(--yellow-card-dark);
+    grid-column: 1;
+}
+
+.red-btn::before {
+    background-color: var(--red-card-dark);
+    grid-column: 2;
+}
+
+/* Make goal and substitution buttons fit the bottom row */
+.goal-btn {
+    grid-row: 2;
+    grid-column: 1 / span 2;
+    height: 42px; /* Reduced height */
+}
+
+.sub-btn-a, .sub-btn-b {
+    grid-row: 3;
+    grid-column: 1 / span 2;
+    height: 42px; /* Reduced height */
+    position: relative;
+    overflow: hidden;
+    /* Default color */
     color: white;
 }
 
-.team-a .sub-btn-a {
-    background-color: #1976d2;
+/* Fix for white or very light colored substitution buttons */
+.sub-btn-a[style*="background-color: rgb(255, 255, 255)"],
+.sub-btn-a[style*="background-color: #ffffff"],
+.sub-btn-a[style*="background-color: #fff"],
+.sub-btn-a[style*="background-color: rgb(237, 221, 221)"],
+.sub-btn-a[style*="background-color: #eddddd"],
+.sub-btn-b[style*="background-color: rgb(255, 255, 255)"],
+.sub-btn-b[style*="background-color: #ffffff"],
+.sub-btn-b[style*="background-color: #fff"],
+.sub-btn-b[style*="background-color: rgb(237, 221, 221)"],
+.sub-btn-b[style*="background-color: #eddddd"] {
+    color: #212121; /* Dark text for light backgrounds */
+    text-shadow: none; /* Remove text shadow for better readability */
+    border: 1px solid #ccc; /* Add a border for better visibility */
+}
+
+.action-btn:active {
+    transform: translateY(0);
+    box-shadow: var(--button-pressed-shadow);
+}
+
+.yellow-btn {
+    background-color: var(--yellow-card);
+    color: var(--text-primary);
+    border-bottom: 4px solid var(--yellow-card-dark);
+}
+
+.yellow-btn:active {
+    border-bottom-width: 2px;
+}
+
+.red-btn {
+    background-color: var(--red-card);
     color: white;
+    border-bottom: 4px solid var(--red-card-dark);
 }
 
-.team-a .goal-btn {
-    background-color: #4caf50;
+.red-btn:active {
+    border-bottom-width: 2px;
+}
+
+.goal-btn {
+    background-color: var(--goal-color);
     color: white;
+    border-bottom: 4px solid var(--goal-color-dark);
 }
 
-.team-b .yellow-btn {
-    background-color: #ffc107;
-    color: black;
+.goal-btn:active {
+    border-bottom-width: 2px;
 }
 
-.team-b .red-btn {
-    background-color: #d32f2f;
+.sub-btn-a {
+    background-color: var(--team-a-color);
     color: white;
+    border-bottom: 4px solid var(--team-a-dark);
 }
 
-.team-b .sub-btn-b {
-    background-color: #d32f2f;
+.sub-btn-a:active {
+    border-bottom-width: 2px;
+}
+
+.sub-btn-b {
+    background-color: var(--team-b-color);
     color: white;
+    border-bottom: 4px solid var(--team-b-dark);
 }
 
-.team-b .goal-btn {
-    background-color: #4caf50;
-    color: white;
+.sub-btn-b:active {
+    border-bottom-width: 2px;
 }
 
-/* Tabs */
+/* Fix for the scrolling issues in the team content area */
+.team-content {
+    flex: 1;
+    overflow: hidden; /* Changed from overflow-y: auto to avoid double scrollbars */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.tab-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .tabs {
     display: flex;
-    justify-content: space-around;
-    margin-top: 1rem;
-    border-bottom: 1px solid #424242;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 8px; /* Reduced margin */
 }
 
 .tab {
-    padding: 0.5rem 1rem;
+    padding: 6px 10px; /* Reduced padding */
     cursor: pointer;
+    font-weight: bold;
     color: var(--text-secondary);
+    border-bottom: 3px solid transparent;
     transition: all 0.3s ease;
+    font-size: 0.9rem; /* Smaller font */
+}
+
+.tab:hover {
+    background-color: rgba(0,0,0,0.03);
 }
 
 .tab.active {
     color: var(--text-primary);
-    border-bottom: 2px solid #1e88e5;
+    border-bottom-color: var(--team-a-color);
 }
 
-.tab:hover:not(.active) {
-    color: #ffffff;
+.team-b .tab.active {
+    border-bottom-color: var(--team-b-color);
 }
 
-/* Event Content */
-.event-content {
+/* Fix for the scrolling issues in the tab content */
+.tab-content {
     display: none;
-    padding: 1rem;
+    overflow-y: auto; /* This enables scrolling */
+    height: calc(100vh - 310px); /* Increased visible area */
+    padding-bottom: 15px; /* Reduced padding at the bottom */
 }
 
-.event-content.active {
+.tab-content.active {
     display: block;
 }
 
+/* Compact Vertical Card Layout */
 .event-card {
+    background-color: white;
+    border-radius: 6px; /* Smaller radius */
+    margin-bottom: 10px; /* Reduced margin */
+    padding: 8px 10px; /* Reduced padding */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
     display: flex;
-    align-items: center;
-    background: var(--card-bg);
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
-    border-radius: 4px;
-    box-shadow: var(--shadow);
+    align-items: center; /* Changed to align items horizontally */
+    width: 100%;
+    transition: transform 0.2s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .event-icon {
-    width: 40px;
-    height: 40px;
+    font-size: 1.2rem; /* Smaller icon */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    border-radius: 4px;
-    margin-right: 1rem;
+    height: 30px;
+    width: 30px;
+    margin-right: 8px; /* Add space between icon and text */
 }
 
 .yellow-icon {
-    background-color: #ffc107;
-    color: black;
+    color: var(--yellow-card);
 }
 
 .red-icon {
-    background-color: #d32f2f;
-    color: white;
-}
-
-.sub-icon-a {
-    background-color: #1976d2;
-    color: white;
-}
-
-.sub-icon-b {
-    background-color: #d32f2f;
-    color: white;
+    color: var(--red-card);
 }
 
 .goal-icon {
-    background-color: #4caf50;
-    color: white;
+    color: var(--goal-color);
+}
+
+.sub-icon-a {
+    color: var(--team-a-color);
+}
+
+/* Fix for white/light colored team icons */
+.sub-icon-a[style*="color: rgb(255, 255, 255)"],
+.sub-icon-a[style*="color: #ffffff"],
+.sub-icon-a[style*="color: #fff"],
+.sub-icon-a[style*="color: rgb(237, 221, 221)"],
+.sub-icon-a[style*="color: #eddddd"] {
+    color: #1976D2; /* Use default blue instead of white */
+}
+
+.sub-icon-b {
+    color: var(--team-b-color);
+}
+
+/* Fix for white/light colored team icons */
+.sub-icon-b[style*="color: rgb(255, 255, 255)"],
+.sub-icon-b[style*="color: #ffffff"],
+.sub-icon-b[style*="color: #fff"],
+.sub-icon-b[style*="color: rgb(237, 221, 221)"],
+.sub-icon-b[style*="color: #eddddd"] {
+    color: #D32F2F; /* Use default red instead of white */
 }
 
 .event-details {
@@ -315,43 +566,45 @@ button:hover:not(:disabled) {
 
 .event-title {
     font-weight: bold;
+    font-size: 0.95rem; /* Smaller font */
+    margin-bottom: 2px; /* Reduced margin */
 }
 
 .event-time {
-    font-size: 0.9rem;
+    font-size: 0.8rem; /* Smaller font */
     color: var(--text-secondary);
-}
-
-.substitutions-list {
-    margin-top: 0.5rem;
-}
-
-.sub-entry {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-left: 1rem;
+    margin-bottom: 2px; /* Reduced margin */
 }
 
 .edit-btn {
-    background: none;
+    position: absolute;
+    right: 6px; /* Reduced spacing */
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.05);
     border: none;
-    color: #1e88e5;
+    width: 26px; /* Smaller button */
+    height: 26px; /* Smaller button */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem; /* Smaller icon */
+    color: var(--text-secondary);
     cursor: pointer;
-    font-size: 1rem;
-    padding: 0.5rem;
+    transition: all 0.2s ease;
 }
 
 .edit-btn:hover {
-    color: #42a5f5;
+    background: rgba(0,0,0,0.1);
+    color: var(--text-primary);
 }
 
-.empty-state {
-    text-align: center;
-    color: var(--text-secondary);
-    padding: 1rem;
+.divider {
+    width: 2px;
+    background-color: var(--border-color);
 }
 
-/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -359,29 +612,29 @@ button:hover:not(:disabled) {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0,0,0,0.7);
     z-index: 1000;
     align-items: center;
     justify-content: center;
-    overflow-y: auto;
 }
 
 .modal-content {
-    background: var(--background-dark);
-    padding: 1rem;
-    border-radius: 8px;
+    background-color: white;
     width: 90%;
-    max-width: 500px;
-    max-height: 80vh;
+    max-width: 350px;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    max-height: 90vh;
     overflow-y: auto;
-    box-shadow: var(--shadow);
+    padding-bottom: 20px;
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 15px;
 }
 
 .modal-title {
@@ -389,12 +642,18 @@ button:hover:not(:disabled) {
     font-weight: bold;
 }
 
+/* Fix for substitution modal title when team is white */
+.modal-title:contains("Substitution - Team") {
+    color: #212121; /* Ensure dark text */
+}
+
 .close-btn {
     background: none;
     border: none;
-    color: var(--text-secondary);
     font-size: 1.5rem;
     cursor: pointer;
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
 }
 
 .close-btn:hover {
@@ -402,213 +661,394 @@ button:hover:not(:disabled) {
 }
 
 .input-group {
-    margin-bottom: 1rem;
+    margin-bottom: 15px;
 }
 
 .input-label {
-    font-size: 0.9rem;
-    margin-bottom: 0.3rem;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #212121; /* Ensure dark text for input labels */
 }
 
 .input-field {
     width: 100%;
-    padding: 0.5rem;
-    background: #333;
-    border: 1px solid #424242;
-    border-radius: 4px;
-    color: var(--text-primary);
+    padding: 10px 12px;
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
     font-size: 1rem;
+    transition: border-color 0.2s ease;
+    margin-bottom: 15px;
 }
 
 .input-field:focus {
+    border-color: #2196F3;
     outline: none;
-    border-color: #1e88e5;
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
 }
 
 .color-picker {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    gap: 8px;
+    margin-top: 8px;
 }
 
 .color-option {
-    width: 30px;
-    height: 30px;
+    width: 28px; /* Slightly smaller */
+    height: 28px; /* Slightly smaller */
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid transparent;
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
-.color-option:hover,
-.color-option.selected {
-    border-color: #ffffff;
+/* Make white/light color options have a border for visibility */
+.color-option[style*="background-color: rgb(255, 255, 255)"],
+.color-option[style*="background-color: #ffffff"],
+.color-option[style*="background-color: #fff"],
+.color-option[style*="background-color: rgb(237, 221, 221)"],
+.color-option[style*="background-color: #eddddd"] {
+    border: 1px solid #ccc;
+}
+
+.color-option:hover {
     transform: scale(1.1);
 }
 
+.color-option.selected {
+    border-color: black;
+    transform: scale(1.1);
+}
+
+/* Modal action buttons - update the confirm button to be visible */
 .modal-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 0.5rem;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-.modal-btn {
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
+/* Make sure the confirm button is visible */
+.modal-btn.confirm-btn {
+    background-color: #2196F3;
+    color: white;
+    border-bottom: 4px solid #0D47A1;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
+    position: relative;
+    transition: all 0.1s ease;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    /* Make sure it's visible */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
 }
 
-.confirm-btn {
-    background-color: #1e88e5;
-    color: white;
+.modal-btn.confirm-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+    border-bottom-width: 2px;
 }
 
-.cancel-btn {
-    background-color: #616161;
-    color: white;
+/* Cancel button styling */
+.modal-btn.cancel-btn {
+    background-color: #f5f5f5;
+    color: #212121;
+    border-bottom: 4px solid #BDBDBD;
+    padding: 8px 16px;
+    min-width: 80px;
+    text-align: center;
+}
+
+.cancel-btn:active {
+    border-bottom-width: 2px;
 }
 
 .delete-btn {
-    background-color: #d32f2f;
+    background-color: #D32F2F;
     color: white;
+    border-bottom: 4px solid #B71C1C;
 }
 
+.delete-btn:active {
+    border-bottom-width: 2px;
+}
+
+/* Add Another Substitution button */
 .add-btn {
-    background-color: #4caf50;
+    background-color: #4CAF50;
     color: white;
-    margin-top: 0.5rem;
+    margin-top: 8px;
+    border-bottom: 4px solid #2E7D32;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
 }
 
-.modal-btn:hover {
-    opacity: 0.9;
-    transform: scale(1.05);
+.add-btn:active {
+    border-bottom-width: 2px;
 }
 
-/* Substitution Modal Specific */
+.fab {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: none;
+    cursor: pointer;
+    z-index: 90;
+    transition: all 0.3s ease;
+}
+
+.fab:hover {
+    transform: scale(1.1);
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+
+.fab.injury-active {
+    background-color: #D32F2F;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-secondary);
+    padding: 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 2.5rem; /* Smaller icon */
+    margin-bottom: 10px; /* Less space */
+    opacity: 0.5;
+}
+
+.summary-container {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
 .substitution-fields {
-    border-top: 1px solid #424242;
-    padding-top: 1rem;
-    margin-top: 1rem;
-    position: relative;
+    margin-top: 12px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 8px;
 }
 
 .sub-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 8px;
 }
 
 .remove-sub-btn {
-    background: none;
+    background: rgba(0,0,0,0.05);
     border: none;
-    color: #d32f2f;
-    font-size: 1rem;
+    color: var(--text-secondary);
     cursor: pointer;
-}
-
-.remove-sub-btn:hover {
-    color: #ff6659;
-}
-
-/* Injury FAB */
-.injury-fab {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: #ff9800;
+    font-size: 0.9rem;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow);
-    color: white;
-    font-size: 1.5rem;
-    z-index: 100;
+    transition: all 0.2s ease;
 }
 
-.injury-fab.injury-active {
-    background-color: #d81b60;
-}
-
-.injury-fab:hover {
-    transform: scale(1.1);
-}
-
-/* Team Score */
-.team-score {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 1rem 0;
-}
-
-.team-score span {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-/* Disabled Button State */
-.disabled {
-    background-color: #616161 !important;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-/* Full-screen Modal for Current Details */
-.full-screen-modal {
-    width: 90%;
-    max-width: 800px;
-    height: 90vh;
-    max-height: none;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.details-container {
-    flex: 1;
-    overflow-y: auto;
-    padding-right: 10px;
-    font-size: 1rem;
-    line-height: 1.6;
-}
-
-.details-container h3 {
-    margin-top: 15px;
-    margin-bottom: 8px;
+.remove-sub-btn:hover {
+    background: rgba(0,0,0,0.1);
     color: var(--text-primary);
 }
 
-.details-container p {
-    margin-left: 15px;
-    color: var(--text-secondary);
+.action-btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Substitution list compact layout */
+.substitutions-list {
+    margin-top: 6px;
+}
+
+.sub-entry {
+    background-color: rgba(0,0,0,0.03);
+    padding: 4px 8px; /* Reduced padding */
+    border-radius: 4px;
+    margin-bottom: 4px; /* Less spacing */
+}
+
+.player-numbers {
+    font-weight: bold;
+    font-size: 0.85rem; /* Smaller font */
+}
+
+/* Update for substitution windows to be more compact */
+.sub-window {
+    display: flex;
+    flex-direction: row; /* Align horizontally */
+    align-items: center;
+}
+
+.sub-window .event-details {
+    flex: 1;
+    margin-left: 6px;
+}
+
+/* Fix for event title in substitution windows */
+.sub-window .event-title {
+    color: #212121; /* Ensure dark text */
+}
+
+.sub-window .substitutions-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.sub-window .sub-entry {
+    margin-bottom: 0;
+}
+
+/* Since :contains doesn't work in CSS, we need JavaScript to fix this
+   Instead, we'll make all modal title and subtitle text dark */
+#subModalTitle {
+    color: #212121 !important; /* Force dark text for substitution modal title */
+}
+
+#cardModalTitle {
+    color: #212121 !important; /* Force dark text for card modal title */
+}
+.team-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px;
+}
+
+.team-name {
+    color: white;
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+/* Responsive adjustments for different screen heights */
+@media (max-height: 700px) {
+    .tab-content {
+        height: calc(100vh - 280px);
+    }
+    
+    .header {
+        min-height: 90px;
+    }
+    
+    .match-time {
+        font-size: 1.2rem;
+    }
+    
+    .team-score {
+        font-size: 1.2rem;
+    }
+    
     .team-actions {
-        grid-template-columns: 1fr;
+        gap: 4px;
     }
-
-    .timer-display {
-        font-size: 1.5rem;
+    
+    .action-btn {
+        padding: 6px 0;
     }
-
-    .team-score span {
-        font-size: 1.5rem;
+    
+    .yellow-btn, .red-btn {
+        height: 50px;
     }
+}
 
-    .modal-content {
-        width: 95%;
+@media (max-height: 600px) {
+    .tab-content {
+        height: calc(100vh - 230px);
     }
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-    .full-screen-modal {
-        width: 95%;
-        height: 95vh;
+.save-pdf-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.save-pdf-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+.save-pdf-btn:active {
+    transform: scale(0.95);
+}
+/* Ensure the layout adapts for smaller screens while maintaining side-by-side */
+@media (max-width: 600px) {
+    .team-actions {
+        gap: 4px;
+    }
+    
+    .action-btn {
+        font-size: 0.75rem;
+    }
+    
+    .yellow-btn, .red-btn {
+        height: 50px;
+    }
+    
+    .yellow-btn::before, .red-btn::before {
+        width: 18px;
+        height: 27px;
+    }
+    
+    .event-title {
+        font-size: 0.9rem;
     }
 }
