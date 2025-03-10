@@ -11,19 +11,29 @@
 <body>
     <div class="container">
         <header>
-            <div class="header-content">
-                <div class="logo">THAI LEAGUE</div>
-                <button class="settings-btn" id="settingsBtn">
-                    <i class="fas fa-cog"></i>
-                </button>
-            </div>
-            <div class="timer-container">
-                <div class="team-score" id="teamAScore">0</div>
-                <div class="match-time" id="matchTime">00:00</div>
-                <div class="team-score" id="teamBScore">0</div>
-                <div class="injury-time" id="injuryTime" style="display: none;">+00:00</div>
-                <div class="total-injury" id="totalInjury" style="display: none;">+00:00</div>
-            </div>
+           <!-- Add this inside the <header> after the .header-content div -->
+<div class="header-content">
+    <div class="logo">THAI LEAGUE</div>
+    <button class="info-btn" id="infoBtn">
+        <i class="fas fa-info-circle"></i>
+    </button>
+    <button class="settings-btn" id="settingsBtn">
+        <i class="fas fa-cog"></i>
+    </button>
+</div>
+
+<!-- Add this new modal at the bottom of the <body> before the script tags -->
+<div class="modal" id="currentDetailsModal">
+    <div class="modal-content full-screen-modal">
+        <div class="modal-header">
+            <div class="modal-title">Current Match Details</div>
+            <button class="close-btn" id="closeCurrentDetailsBtn">×</button>
+        </div>
+        <div class="details-container" id="currentDetailsContent">
+            <!-- Dynamic content will be inserted here -->
+        </div>
+    </div>
+</div>
         </header>
         
         <div class="match-controls" id="matchControls">
