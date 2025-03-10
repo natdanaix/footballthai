@@ -520,7 +520,7 @@ function createSecondHalfConfirmModal() {
         localStorage.removeItem('matchData');
     }
 
- function updateUI() {
+function updateUI() {
     // อัปเดตชื่อและสีของทีม A
     teamAHeader.textContent = matchState.teamA.name;
     teamAHeader.style.backgroundColor = matchState.teamA.color;
