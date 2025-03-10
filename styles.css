@@ -1,79 +1,55 @@
-/* Enhanced styles with 3D buttons and vertical cards */
-
-:root {
-    --team-a-color: #1976D2;
-    --team-a-dark: #0D47A1;
-    --team-a-light: #E3F2FD;
-    --team-b-color: #D32F2F;
-    --team-b-dark: #B71C1C;
-    --team-b-light: #FFEBEE;
-    --neutral-bg: #F5F5F5;
-    --yellow-card: #FFC107;
-    --yellow-card-dark: #FFA000;
-    --red-card: #D32F2F;
-    --red-card-dark: #B71C1C;
-    --goal-color: #4CAF50;
-    --goal-color-dark: #2E7D32;
-    --text-primary: #212121;
-    --text-secondary: #757575;
-    --text-light: #FFFFFF;
-    --border-color: #E0E0E0;
-    --button-shadow: 0 4px 0 rgba(0,0,0,0.2);
-    --button-pressed-shadow: 0 2px 0 rgba(0,0,0,0.2);
-}
-
+/* General Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
 }
 
 body {
-    background-color: var(--neutral-bg);
-    color: var(--text-primary);
+    background-color: #121212;
+    color: #e0e0e0;
     font-size: 16px;
     line-height: 1.5;
-    width: 100%;
     overflow-x: hidden;
 }
 
-.container {
-    width: 100%;
-    margin: 0 auto;
+/* Variables */
+:root {
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --background-dark: #1e1e1e;
+    --card-bg: #252525;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
+/* Header */
 header {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://www.mahajak.com/media/codazon/slideshow/cache/1920x807/_/-/_-3.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: white;
-    padding: 10px;
+    background: linear-gradient(135deg, #1e88e5, #d81b60);
+    padding: 1rem;
     text-align: center;
+    box-shadow: var(--shadow);
     position: sticky;
     top: 0;
-    z-index: 100;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    min-height: 120px;
+    z-index: 10;
 }
 
 .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .logo {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    color: white;
 }
-/* Add these styles at the end of your styles.css file */
 
-/* Info Button in Header */
-.info-btn {
-    background: rgba(255,255,255,0.2);
+.settings-btn {
+    background: rgba(255, 255, 255, 0.2);
     border: none;
     color: white;
     font-size: 1.2rem;
@@ -85,20 +61,510 @@ header {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    margin-right: 10px; /* Space between info and settings buttons */
 }
 
-.info-btn:hover {
-    background: rgba(255,255,255,0.3);
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
     transform: scale(1.1);
 }
 
-/* Full-screen Modal */
+/* Info Button in Header */
+.info-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+}
+
+.info-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+/* Main Layout */
+main {
+    max-width: 1200px;
+    margin: 1rem auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Timer Section */
+.timer-section {
+    background: var(--background-dark);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.timer-display {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+#injuryTime {
+    display: none;
+    font-size: 1.5rem;
+    color: #ff9800;
+    margin-top: 0.5rem;
+}
+
+#totalInjury {
+    display: none;
+    font-size: 1.5rem;
+    color: #ff9800;
+    margin-top: 0.5rem;
+}
+
+.match-controls,
+.injury-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: scale(1.05);
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.action-btn i {
+    margin-right: 0.3rem;
+}
+
+/* Team Sections */
+.team-section {
+    background: var(--background-dark);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.team-header {
+    padding: 0.5rem;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 4px 4px 0 0;
+}
+
+.team-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+.team-a .yellow-btn {
+    background-color: #ffc107;
+    color: black;
+}
+
+.team-a .red-btn {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.team-a .sub-btn-a {
+    background-color: #1976d2;
+    color: white;
+}
+
+.team-a .goal-btn {
+    background-color: #4caf50;
+    color: white;
+}
+
+.team-b .yellow-btn {
+    background-color: #ffc107;
+    color: black;
+}
+
+.team-b .red-btn {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.team-b .sub-btn-b {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.team-b .goal-btn {
+    background-color: #4caf50;
+    color: white;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+    border-bottom: 1px solid #424242;
+}
+
+.tab {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.tab.active {
+    color: var(--text-primary);
+    border-bottom: 2px solid #1e88e5;
+}
+
+.tab:hover:not(.active) {
+    color: #ffffff;
+}
+
+/* Event Content */
+.event-content {
+    display: none;
+    padding: 1rem;
+}
+
+.event-content.active {
+    display: block;
+}
+
+.event-card {
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+}
+
+.event-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    margin-right: 1rem;
+}
+
+.yellow-icon {
+    background-color: #ffc107;
+    color: black;
+}
+
+.red-icon {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.sub-icon-a {
+    background-color: #1976d2;
+    color: white;
+}
+
+.sub-icon-b {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.goal-icon {
+    background-color: #4caf50;
+    color: white;
+}
+
+.event-details {
+    flex: 1;
+}
+
+.event-title {
+    font-weight: bold;
+}
+
+.event-time {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.substitutions-list {
+    margin-top: 0.5rem;
+}
+
+.sub-entry {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-left: 1rem;
+}
+
+.edit-btn {
+    background: none;
+    border: none;
+    color: #1e88e5;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.5rem;
+}
+
+.edit-btn:hover {
+    color: #42a5f5;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 1rem;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background: var(--background-dark);
+    padding: 1rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.modal-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: var(--text-primary);
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.5rem;
+    background: #333;
+    border: 1px solid #424242;
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #1e88e5;
+}
+
+.color-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.color-option:hover,
+.color-option.selected {
+    border-color: #ffffff;
+    transform: scale(1.1);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.modal-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.confirm-btn {
+    background-color: #1e88e5;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #616161;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.add-btn {
+    background-color: #4caf50;
+    color: white;
+    margin-top: 0.5rem;
+}
+
+.modal-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+}
+
+/* Substitution Modal Specific */
+.substitution-fields {
+    border-top: 1px solid #424242;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    position: relative;
+}
+
+.sub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.remove-sub-btn {
+    background: none;
+    border: none;
+    color: #d32f2f;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.remove-sub-btn:hover {
+    color: #ff6659;
+}
+
+/* Injury FAB */
+.injury-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #ff9800;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    color: white;
+    font-size: 1.5rem;
+    z-index: 100;
+}
+
+.injury-fab.injury-active {
+    background-color: #d81b60;
+}
+
+.injury-fab:hover {
+    transform: scale(1.1);
+}
+
+/* Team Score */
+.team-score {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.team-score span {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Disabled Button State */
+.disabled {
+    background-color: #616161 !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Full-screen Modal for Current Details */
 .full-screen-modal {
     width: 90%;
-    max-width: 800px; /* Wider for better readability */
+    max-width: 800px;
     height: 90vh;
-    max-height: none; /* Override default max-height */
+    max-height: none;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -123,752 +589,26 @@ header {
     color: var(--text-secondary);
 }
 
-/* Ensure modal is centered and scrollable */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    overflow-y: auto; /* Allow scrolling if content overflows */
-}
-.settings-btn {
-    background: rgba(255,255,255,0.2);
-    border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.settings-btn:hover {
-    background: rgba(255,255,255,0.3);
-    transform: rotate(30deg);
-}
-
-.timer-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    padding: 0 20px;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.match-time {
-    background-color: #0D47A1;
-    color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding: 8px 16px;
-    border-radius: 12px;
-    order: 2;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-}
-
-.team-score {
-    background-color: #FFFFFF;
-    color: var(--text-primary);
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding: 6px 12px;
-    border-radius: 12px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-    min-width: 40px;
-    text-align: center;
-}
-
-#teamAScore {
-    order: 1;
-}
-
-#teamBScore {
-    order: 3;
-}
-
-.injury-time {
-    background-color: #D32F2F;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 6px 12px;
-    border-radius: 12px;
-    order: 4;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-}
-
-.total-injury {
-    background-color: #FF9800;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 6px 12px;
-    border-radius: 12px;
-    order: 5;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-}
-
-.match-controls {
-    display: flex;
-    justify-content: center;
-    padding: 12px;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    gap: 15px;
-}
-
-/* 3D Buttons Styling */
-.control-btn {
-    padding: 12px 18px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    justify-content: center;
-    position: relative;
-    transition: all 0.1s ease;
-    transform: translateY(-2px);
-    box-shadow: var(--button-shadow);
-}
-
-.control-btn:active {
-    transform: translateY(0);
-    box-shadow: var(--button-pressed-shadow);
-}
-
-.start-btn {
-    background-color: #4CAF50;
-    color: white;
-    border-bottom: 4px solid #2E7D32;
-}
-
-.start-btn:active {
-    border-bottom-width: 2px;
-}
-
-.reset-btn {
-    background-color: #D32F2F;
-    color: white;
-    border-bottom: 4px solid #B71C1C;
-}
-
-.reset-btn:active {
-    border-bottom-width: 2px;
-}
-
-.injury-btn {
-    background-color: #4CAF50;
-    color: white;
-    border-bottom: 4px solid #2E7D32;
-}
-
-.injury-btn:active {
-    border-bottom-width: 2px;
-}
-
-.injury-btn.active {
-    background-color: #D32F2F;
-    border-bottom: 4px solid #B71C1C;
-}
-
-.teams-container {
-    display: flex;
-    height: calc(100vh - 180px);
-}
-
-.team-panel {
-    flex: 1;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-}
-
-.team-a {
-    background-color: var(--team-a-light);
-}
-
-.team-b {
-    background-color: var(--team-b-light);
-}
-
-.team-header {
-    padding: 12px;
-    text-align: center;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    font-weight: bold;
-    color: white;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-}
-
-.team-a .team-header {
-    background-color: var(--team-a-color);
-}
-
-.team-b .team-header {
-    background-color: var(--team-b-color);
-}
-
-/* Action Buttons With 3D Effect */
-.team-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
-    margin-bottom: 15px;
-    gap: 10px;
-}
-
-.action-btn {
-    padding: 10px 0;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 0.9rem;
-    position: relative;
-    transition: all 0.1s ease;
-    transform: translateY(-2px);
-    box-shadow: var(--button-shadow);
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-}
-
-/* Make yellow and red cards fit the top row with increased height */
-.yellow-btn, .red-btn {
-    grid-row: 1;
-    height: 70px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Add card icon visual indicator */
-.yellow-btn::before, .red-btn::before {
-    content: "";
-    display: block;
-    width: 24px;
-    height: 36px;
-    margin-bottom: 5px;
-    border-radius: 3px;
-}
-
-.yellow-btn::before {
-    background-color: var(--yellow-card-dark);
-    grid-column: 1;
-}
-
-.red-btn::before {
-    background-color: var(--red-card-dark);
-    grid-column: 2;
-}
-
-/* Make goal and substitution buttons fit the bottom row */
-.goal-btn {
-    grid-row: 2;
-    grid-column: 1 / span 2;
-    height: 50px;
-}
-
-.sub-btn-a, .sub-btn-b {
-    grid-row: 3;
-    grid-column: 1 / span 2;
-    height: 50px;
-}
-
-.action-btn:active {
-    transform: translateY(0);
-    box-shadow: var(--button-pressed-shadow);
-}
-
-.yellow-btn {
-    background-color: var(--yellow-card);
-    color: var(--text-primary);
-    border-bottom: 4px solid var(--yellow-card-dark);
-}
-
-.yellow-btn:active {
-    border-bottom-width: 2px;
-}
-
-.red-btn {
-    background-color: var(--red-card);
-    color: white;
-    border-bottom: 4px solid var(--red-card-dark);
-}
-
-.red-btn:active {
-    border-bottom-width: 2px;
-}
-
-.goal-btn {
-    background-color: var(--goal-color);
-    color: white;
-    border-bottom: 4px solid var(--goal-color-dark);
-}
-
-.goal-btn:active {
-    border-bottom-width: 2px;
-}
-
-.sub-btn-a {
-    background-color: var(--team-a-color);
-    color: white;
-    border-bottom: 4px solid var(--team-a-dark);
-}
-
-.sub-btn-a:active {
-    border-bottom-width: 2px;
-}
-
-.sub-btn-b {
-    background-color: var(--team-b-color);
-    color: white;
-    border-bottom: 4px solid var(--team-b-dark);
-}
-
-.sub-btn-b:active {
-    border-bottom-width: 2px;
-}
-
-.team-content {
-    flex: 1;
-    overflow-y: auto;
-}
-
-.tab-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.tabs {
-    display: flex;
-    border-bottom: 2px solid var(--border-color);
-    margin-bottom: 10px;
-}
-
-.tab {
-    padding: 8px 12px;
-    cursor: pointer;
-    font-weight: bold;
-    color: var(--text-secondary);
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s ease;
-}
-
-.tab:hover {
-    background-color: rgba(0,0,0,0.03);
-}
-
-.tab.active {
-    color: var(--text-primary);
-    border-bottom-color: var(--team-a-color);
-}
-
-.team-b .tab.active {
-    border-bottom-color: var(--team-b-color);
-}
-
-.tab-content {
-    display: none;
-    flex: 1;
-    overflow-y: auto;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-/* Vertical Card Layout */
-.event-card {
-    background-color: white;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    padding: 12px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    transition: transform 0.2s ease;
-}
-
-.event-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.event-icon {
-    margin-bottom: 8px;
-    font-size: 1.4rem;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    height: 30px;
-}
-
-.yellow-icon {
-    color: var(--yellow-card);
-}
-
-.red-icon {
-    color: var(--red-card);
-}
-
-.goal-icon {
-    color: var(--goal-color);
-}
-
-.sub-icon-a {
-    color: var(--team-a-color);
-}
-
-.sub-icon-b {
-    color: var(--team-b-color);
-}
-
-.event-details {
-    flex: 1;
-}
-
-.event-title {
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-size: 1.1rem;
-}
-
-.event-time {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-bottom: 5px;
-}
-
-.edit-btn {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    background: rgba(0,0,0,0.05);
-    border: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.edit-btn:hover {
-    background: rgba(0,0,0,0.1);
-    color: var(--text-primary);
-}
-
-.divider {
-    width: 2px;
-    background-color: var(--border-color);
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-content {
-    background-color: white;
-    width: 90%;
-    max-width: 350px;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.modal-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--text-secondary);
-    transition: color 0.2s ease;
-}
-
-.close-btn:hover {
-    color: var(--text-primary);
-}
-
-.input-group {
-    margin-bottom: 15px;
-}
-
-.input-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-.input-field {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 1rem;
-    transition: border-color 0.2s ease;
-}
-
-.input-field:focus {
-    border-color: #2196F3;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
-}
-
-.color-picker {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-}
-
-.color-option {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: transform 0.2s ease;
-}
-
-.color-option:hover {
-    transform: scale(1.1);
-}
-
-.color-option.selected {
-    border-color: black;
-    transform: scale(1.1);
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.modal-btn {
-    padding: 10px 18px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.1s ease;
-    transform: translateY(-2px);
-    box-shadow: var(--button-shadow);
-}
-
-.modal-btn:active {
-    transform: translateY(0);
-    box-shadow: var(--button-pressed-shadow);
-}
-
-.cancel-btn {
-    background-color: var(--neutral-bg);
-    color: var(--text-primary);
-    border-bottom: 4px solid #BDBDBD;
-}
-
-.cancel-btn:active {
-    border-bottom-width: 2px;
-}
-
-.confirm-btn {
-    background-color: #2196F3;
-    color: white;
-    border-bottom: 4px solid #0D47A1;
-}
-
-.confirm-btn:active {
-    border-bottom-width: 2px;
-}
-
-.delete-btn {
-    background-color: #D32F2F;
-    color: white;
-    border-bottom: 4px solid #B71C1C;
-}
-
-.delete-btn:active {
-    border-bottom-width: 2px;
-}
-
-.fab {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #4CAF50;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    border: none;
-    cursor: pointer;
-    z-index: 90;
-    transition: all 0.3s ease;
-}
-
-.fab:hover {
-    transform: scale(1.1);
-}
-
-.fab:active {
-    transform: scale(0.95);
-}
-
-.fab.injury-active {
-    background-color: #D32F2F;
-}
-
-.empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: var(--text-secondary);
-    padding: 20px;
-    text-align: center;
-}
-
-.empty-icon {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    opacity: 0.5;
-}
-
-.summary-container {
-    max-height: 60vh;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-.substitution-fields {
-    margin-top: 15px;
-    border-top: 1px solid var(--border-color);
-    padding-top: 10px;
-}
-
-.sub-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.remove-sub-btn {
-    background: rgba(0,0,0,0.05);
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    font-size: 1rem;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-
-.remove-sub-btn:hover {
-    background: rgba(0,0,0,0.1);
-    color: var(--text-primary);
-}
-
-.add-btn {
-    background-color: #4CAF50;
-    color: white;
-    margin-top: 10px;
-    border-bottom: 4px solid #2E7D32;
-}
-
-.add-btn:active {
-    border-bottom-width: 2px;
-}
-
-.action-btn.disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* Substitution list vertical layout */
-.substitutions-list {
-    margin-top: 8px;
-}
-
-.sub-entry {
-    background-color: rgba(0,0,0,0.03);
-    padding: 6px 10px;
-    border-radius: 4px;
-    margin-bottom: 5px;
-}
-
-.player-numbers {
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
-/* Fix for vertical sub windows */
-.sub-window {
-    display: flex;
-    flex-direction: column;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .team-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .timer-display {
+        font-size: 1.5rem;
+    }
+
+    .team-score span {
+        font-size: 1.5rem;
+    }
+
+    .modal-content {
+        width: 95%;
+    }
+
+    .full-screen-modal {
+        width: 95%;
+        height: 95vh;
+    }
 }
