@@ -524,13 +524,11 @@ function createSecondHalfConfirmModal() {
     // อัปเดตชื่อและสีของทีม A
     teamAHeader.textContent = matchState.teamA.name;
     teamAHeader.style.backgroundColor = matchState.teamA.color;
-    // ถ้าสีทีม A เป็นสีขาว (#FFFFFF) ให้เปลี่ยนข้อความเป็นสีดำ
     teamAHeader.style.color = matchState.teamA.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
 
     // อัปเดตชื่อและสีของทีม B
     teamBHeader.textContent = matchState.teamB.name;
     teamBHeader.style.backgroundColor = matchState.teamB.color;
-    // ถ้าสีทีม B เป็นสีขาว (#FFFFFF) ให้เปลี่ยนข้อความเป็นสีดำ
     teamBHeader.style.color = matchState.teamB.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
 
     // อัปเดตคะแนนในส่วนหัว
@@ -539,26 +537,27 @@ function createSecondHalfConfirmModal() {
     teamAScoreEl.textContent = matchState.teamA.goals;
     teamBScoreEl.textContent = matchState.teamB.goals;
 
-    // อัปเดตสีของปุ่มเปลี่ยนตัวทีม A
+    // อัปเดตสีและข้อความของปุ่มเปลี่ยนตัวทีม A
     teamASubBtn.style.backgroundColor = matchState.teamA.color;
     teamASubBtn.style.color = matchState.teamA.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
     teamAHalfSubBtn.style.backgroundColor = matchState.teamA.color;
     teamAHalfSubBtn.style.color = matchState.teamA.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
 
-    // อัปเดตสีของปุ่มเปลี่ยนตัวทีม B
+    // อัปเดตสีและข้อความของปุ่มเปลี่ยนตัวทีม B
     teamBSubBtn.style.backgroundColor = matchState.teamB.color;
     teamBSubBtn.style.color = matchState.teamB.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
     teamBHalfSubBtn.style.backgroundColor = matchState.teamB.color;
     teamBHalfSubBtn.style.color = matchState.teamB.color.toUpperCase() === '#FFFFFF' ? '#000000' : '#FFFFFF';
 
-    // ส่วนที่เหลือของฟังก์ชัน updateUI คงเดิม
     // ปรับการแสดงปุ่ม Half-time Sub ให้แสดงเฉพาะช่วงพักครึ่งเท่านั้น
     if (matchState.isHalfTime) {
+        // ช่วงพักครึ่ง: แสดงปุ่ม Half-time Sub, ซ่อนปุ่ม Substitution
         teamAHalfSubBtn.style.display = 'block';
         teamBHalfSubBtn.style.display = 'block';
         teamASubBtn.style.display = 'none';
         teamBSubBtn.style.display = 'none';
     } else {
+        // ระหว่างการแข่งขัน หรือก่อนเริ่มเกม: ซ่อนปุ่ม Half-time Sub, แสดงปุ่ม Substitution
         teamAHalfSubBtn.style.display = 'none';
         teamBHalfSubBtn.style.display = 'none';
         teamASubBtn.style.display = 'block';
@@ -566,8 +565,11 @@ function createSecondHalfConfirmModal() {
     }
 
     updateSubstitutionButtonsState();
+
+    // แสดงเวลาการแข่งขัน
     matchTimeEl.textContent = matchState.elapsedTime;
-    
+
+    // อัปเดตการแสดงผล Injury Time
     if (matchState.isInjuryTimeActive) {
         injuryTimeEl.textContent = matchState.currentInjuryTimeDisplay;
         injuryTimeEl.style.display = 'block';
@@ -592,12 +594,12 @@ function createSecondHalfConfirmModal() {
         injuryFab.classList.remove('injury-active');
         injuryFab.innerHTML = '<i class="fas fa-stopwatch"></i>';
     }
-    
+
     // แสดง/ซ่อน ปุ่มควบคุมตามสถานะของการแข่งขัน
     if (matchState.isMatchStarted && !matchState.isHalfTime) {
         // เมื่อแข่งขันกำลังดำเนินอยู่
         matchControlsEl.style.display = 'none';
-        
+
         // ซ่อนปุ่ม Injury Time เมื่ออยู่ในช่วงนับถอยหลังเวลาบาดเจ็บ
         if (matchState.isAddingInjuryTime) {
             injuryControlsEl.style.display = 'flex';
@@ -608,7 +610,7 @@ function createSecondHalfConfirmModal() {
             injuryFab.style.display = 'flex';
             injuryBtn.style.display = 'block'; // แสดงปุ่ม Injury Time
         }
-        
+
         // อัปเดตข้อความปุ่มสำหรับครึ่งหลัง
         if (!matchState.isFirstHalf) {
             startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Second Half';
@@ -626,77 +628,11 @@ function createSecondHalfConfirmModal() {
         injuryFab.style.display = 'none';
         startMatchBtn.innerHTML = '<i class="fas fa-play"></i> Start Match';
     }
-    
+
+    // อัปเดตการแสดงผลการ์ดและการเปลี่ยนตัว
     renderTeamCards();
     renderTeamSubstitutions();
 }
-
-    function updateSubstitutionButtonsState() {
-        // Check for max 5 players substituted per team
-        if (matchState.isMatchStarted || matchState.isHalfTime) {
-            // Team A substitution button state
-            const teamAPlayerSubCount = getPlayerSubCount(true);
-            const teamAWindowsUsed = matchState.teamA.subWindows;
-            
-            if (teamAPlayerSubCount >= 5) {
-                teamASubBtn.disabled = true;
-                teamASubBtn.classList.add('disabled');
-                teamASubBtn.innerHTML = 'Max 5 Players Subbed';
-                
-                teamAHalfSubBtn.disabled = true;
-                teamAHalfSubBtn.classList.add('disabled');
-                teamAHalfSubBtn.innerHTML = 'Max 5 Players Subbed';
-            } else if (teamAWindowsUsed >= 3 && !matchState.activeSubWindow.teamA && !matchState.isHalfTime) {
-                teamASubBtn.disabled = true;
-                teamASubBtn.classList.add('disabled');
-                teamASubBtn.innerHTML = 'Sub Windows Exhausted';
-                
-                // Half-time subs don't count toward the 3 windows
-                teamAHalfSubBtn.disabled = false;
-                teamAHalfSubBtn.classList.remove('disabled');
-                teamAHalfSubBtn.innerHTML = 'Half-time Sub';
-            } else {
-                teamASubBtn.disabled = false;
-                teamASubBtn.classList.remove('disabled');
-                teamASubBtn.innerHTML = 'Substitution' + (matchState.activeSubWindow.teamA ? ' (Active)' : '');
-                
-                teamAHalfSubBtn.disabled = false;
-                teamAHalfSubBtn.classList.remove('disabled');
-                teamAHalfSubBtn.innerHTML = 'Half-time Sub';
-            }
-            
-            // Team B substitution button state
-            const teamBPlayerSubCount = getPlayerSubCount(false);
-            const teamBWindowsUsed = matchState.teamB.subWindows;
-            
-            if (teamBPlayerSubCount >= 5) {
-                teamBSubBtn.disabled = true;
-                teamBSubBtn.classList.add('disabled');
-                teamBSubBtn.innerHTML = 'Max 5 Players Subbed';
-                
-                teamBHalfSubBtn.disabled = true;
-                teamBHalfSubBtn.classList.add('disabled');
-                teamBHalfSubBtn.innerHTML = 'Max 5 Players Subbed';
-            } else if (teamBWindowsUsed >= 3 && !matchState.activeSubWindow.teamB && !matchState.isHalfTime) {
-                teamBSubBtn.disabled = true;
-                teamBSubBtn.classList.add('disabled');
-                teamBSubBtn.innerHTML = 'Sub Windows Exhausted';
-                
-                // Half-time subs don't count toward the 3 windows
-                teamBHalfSubBtn.disabled = false;
-                teamBHalfSubBtn.classList.remove('disabled');
-                teamBHalfSubBtn.innerHTML = 'Half-time Sub';
-            } else {
-                teamBSubBtn.disabled = false;
-                teamBSubBtn.classList.remove('disabled');
-                teamBSubBtn.innerHTML = 'Substitution' + (matchState.activeSubWindow.teamB ? ' (Active)' : '');
-                
-                teamBHalfSubBtn.disabled = false;
-                teamBHalfSubBtn.classList.remove('disabled');
-                teamBHalfSubBtn.innerHTML = 'Half-time Sub';
-            }
-        }
-    }
 
     // Get total player substitution count for a team
     function getPlayerSubCount(isTeamA) {
