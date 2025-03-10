@@ -58,6 +58,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const teamAHeader = document.getElementById('teamAHeader');
     const teamBHeader = document.getElementById('teamBHeader');
     const endMatchBtn = document.getElementById('endMatchBtn');
+    const infoBtn = document.getElementById('infoBtn');
+    const currentDetailsModal = document.getElementById('currentDetailsModal');
+    const currentDetailsContent = document.getElementById('currentDetailsContent');
+    const closeCurrentDetailsBtn = document.getElementById('closeCurrentDetailsBtn');
 
     // Team A buttons
     const teamAYellowBtn = document.getElementById('teamAYellowBtn');
@@ -287,9 +291,101 @@ function createSecondHalfConfirmModal() {
         
         document.getElementById('startSecondHalfBtn').addEventListener('click', startSecondHalf);
     }
+function showCurrentDetails() {
+    const teamA = matchState.teamA;
+    const teamB = matchState.teamB;
+    const teamAYellowCards = teamA.cards.filter(card => card.isYellow).length;
+    const teamARedCards = teamA.cards.filter(card => !card.isYellow && !card.isGoal).length;
+    const teamAGoals = teamA.goals;
+    const teamBYellowCards = teamB.cards.filter(card => card.isYellow).length;
+    const teamBRedCards = teamB.cards.filter(card => !card.isYellow && !card.isGoal).length;
+    const teamBGoals = teamB.goals;
 
+    // Include both regular and half-time substitutions
+    const teamAAllSubs = [...teamA.substitutions, ...teamA.halfTimeSubstitutions.map(sub => ({...sub, isHalfTime: true}))];
+    const teamBAllSubs = [...teamB.substitutions, ...teamB.halfTimeSubstitutions.map(sub => ({...sub, isHalfTime: true}))];
+    
+    const teamASubWindows = groupSubstitutionsByWindow(teamAAllSubs);
+    const teamBSubWindows = groupSubstitutionsByWindow(teamBAllSubs);
+    
+    const totalMatchTime = matchState.elapsedTime;
+    const totalInjuryTime = getTotalInjuryTimeDisplay();
+    
+    const teamAPlayerSubCount = getPlayerSubCount(true);
+    const teamBPlayerSubCount = getPlayerSubCount(false);
+
+    let detailsHTML = `
+        <div style="margin-bottom: 16px;">
+            <h3>Current Match Status</h3>
+            <p>Match Time: ${totalMatchTime}</p>
+            <p>Total Injury Time: ${totalInjuryTime}</p>
+            <p>Half: ${matchState.isFirstHalf ? 'First Half' : (matchState.isHalfTime ? 'Half-time' : 'Second Half')}</p>
+            <p>Match Started: ${matchState.isMatchStarted ? 'Yes' : 'No'}</p>
+            ${matchState.isInjuryTimeActive ? `<p>Current Injury Time Running: ${matchState.currentInjuryTimeDisplay}</p>` : ''}
+        </div>
+        <div style="margin-bottom: 16px;">
+            <h3>${teamA.name}</h3>
+            <p>Goals: ${teamAGoals}</p>
+            <p>Yellow Cards: ${teamAYellowCards}</p>
+            <p>Red Cards: ${teamARedCards}</p>
+            <p>Substitution Windows: ${teamA.subWindows}/3 (${teamAPlayerSubCount}/5 Players)</p>
+            ${teamA.cards.length > 0 ? `
+                <div style="margin-top: 8px;">
+                    <p>Event Details:</p>
+                    ${teamA.cards.map(card => `
+                        <p style="margin-left: 16px;">- ${card.isGoal ? 'Goal' : (card.isYellow ? 'Yellow Card' : 'Red Card')} #${card.playerNumber} (${card.timeStamp})</p>
+                    `).join('')}
+                </div>
+            ` : '<p>No events yet</p>'}
+            ${teamASubWindows.length > 0 ? `
+                <div style="margin-top: 8px;">
+                    <p>Substitution Details:</p>
+                    ${teamASubWindows.map((window, index) => `
+                        <p style="margin-left: 16px;">- ${window.isHalfTime ? 'Half-time Substitution' : `Window ${index + 1}`} (${window.timeStamp}):</p>
+                        ${window.substitutions.map(sub => `
+                            <p style="margin-left: 32px;">#${sub.playerInNumber} In, #${sub.playerOutNumber} Out</p>
+                        `).join('')}
+                    `).join('')}
+                </div>
+            ` : '<p>No substitutions yet</p>'}
+        </div>
+        <div>
+            <h3>${teamB.name}</h3>
+            <p>Goals: ${teamBGoals}</p>
+            <p>Yellow Cards: ${teamBYellowCards}</p>
+            <p>Red Cards: ${teamBRedCards}</p>
+            <p>Substitution Windows: ${teamB.subWindows}/3 (${teamBPlayerSubCount}/5 Players)</p>
+            ${teamB.cards.length > 0 ? `
+                <div style="margin-top: 8px;">
+                    <p>Event Details:</p>
+                    ${teamB.cards.map(card => `
+                        <p style="margin-left: 16px;">- ${card.isGoal ? 'Goal' : (card.isYellow ? 'Yellow Card' : 'Red Card')} #${card.playerNumber} (${card.timeStamp})</p>
+                    `).join('')}
+                </div>
+            ` : '<p>No events yet</p>'}
+            ${teamBSubWindows.length > 0 ? `
+                <div style="margin-top: 8px;">
+                    <p>Substitution Details:</p>
+                    ${teamBSubWindows.map((window, index) => `
+                        <p style="margin-left: 16px;">- ${window.isHalfTime ? 'Half-time Substitution' : `Window ${index + 1}`} (${window.timeStamp}):</p>
+                        ${window.substitutions.map(sub => `
+                            <p style="margin-left: 32px;">#${sub.playerInNumber} In, #${sub.playerOutNumber} Out</p>
+                        `).join('')}
+                    `).join('')}
+                </div>
+            ` : '<p>No substitutions yet</p>'}
+        </div>
+    `;
+
+    currentDetailsContent.innerHTML = detailsHTML;
+    currentDetailsModal.style.display = 'flex';
+}
     // Set up all event listeners
   function setupEventListeners() {
+      infoBtn.addEventListener('click', showCurrentDetails);
+    closeCurrentDetailsBtn.addEventListener('click', () => {
+        currentDetailsModal.style.display = 'none';
+    });
     // ปุ่มเริ่มการแข่งขัน (เพิ่มการตรวจสอบว่าเป็นครึ่งหลังหรือไม่)
     startMatchBtn.addEventListener('click', () => {
         if (matchState.isHalfTime) {
